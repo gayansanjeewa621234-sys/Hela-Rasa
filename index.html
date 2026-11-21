@@ -1,665 +1,1334 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hela Rasa - හෙළ රස</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hela Rasa (හෙළ රස) - Traditional Sri Lankan Recipes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Sinhala:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Sinhala:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<script>
-tailwind.config = {
- theme: {
-  extend: {
-   colors: {
-    terracotta:'#D9531E',
-    terracottaDark:'#B84012',
-    leafGreen:'#2E5A36',
-    leafGreenLight:'#3D7547',
-    warmCream:'#FDFBF7',
-    richBrown:'#3E2723',
-    softSand:'#F4EFE6'
-   },
-   fontFamily:{
-    sans:['Inter','Noto Sans Sinhala','sans-serif']
-   }
-  }
- }
-}
-</script>
-
-<style>
-* { box-sizing:border-box; }
-body { font-family:Inter,'Noto Sans Sinhala',sans-serif; }
-.no-scrollbar::-webkit-scrollbar {display:none}
-.no-scrollbar {scrollbar-width:none}
-.fade-in {animation:fadeIn .25s ease}
-@keyframes fadeIn {
- from {opacity:0;transform:translateY(6px)}
- to {opacity:1;transform:translateY(0)}
-}
-.ingredient-checked span {
- text-decoration:line-through;
- color:#9ca3af;
-}
-</style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        terracotta: '#D9531E',
+                        terracottaDark: '#B84012',
+                        leafGreen: '#2E5A36',
+                        leafGreenLight: '#3D7547',
+                        warmCream: '#FDFBF7',
+                        richBrown: '#3E2723',
+                        softSand: '#F4EFE6'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans Sinhala', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .fade-in {
+            animation: fadeIn 0.25s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .ingredient-checked span {
+            text-decoration: line-through;
+            color: #9CA3AF;
+        }
+    </style>
 </head>
+<body class="bg-stone-200 font-sans text-richBrown antialiased flex justify-center min-h-screen">
 
-<body class="bg-stone-200 text-richBrown min-h-screen flex justify-center">
+    <div id="app-container" class="w-full max-w-[480px] bg-warmCream min-h-screen shadow-2xl relative flex flex-col overflow-x-hidden">
 
-<div class="w-full max-w-[480px] min-h-screen bg-warmCream shadow-2xl relative flex flex-col">
+        <header class="sticky top-0 z-30 bg-warmCream/95 backdrop-blur-md border-b border-stone-200/80 px-4 py-3.5 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-terracotta to-amber-600 flex items-center justify-center text-white shadow-md text-xl">
+                    🍲
+                </div>
+                <div>
+                    <h1 class="text-lg font-extrabold tracking-tight text-richBrown leading-none">
+                        Hela Rasa <span class="text-terracotta font-bold text-base">හෙළ රස</span>
+                    </h1>
+                    <p id="header-subtitle" class="text-[11px] text-stone-500 font-medium mt-0.5">Authentic Sri Lankan Cuisine</p>
+                </div>
+            </div>
 
-<header class="sticky top-0 z-30 bg-warmCream/95 backdrop-blur border-b border-stone-200 px-4 py-3 flex justify-between items-center">
- <div class="flex items-center gap-2.5">
-  <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-terracotta to-amber-600 flex items-center justify-center text-white text-xl">🍲</div>
-  <div>
-   <h1 class="font-extrabold text-lg">Hela Rasa <span class="text-terracotta">හෙළ රස</span></h1>
-   <p id="subtitle" class="text-[11px] text-stone-500">Authentic Sri Lankan Cuisine</p>
-  </div>
- </div>
- <button onclick="toggleLanguage()" class="bg-softSand rounded-full p-1 text-xs font-bold">
-  <span id="enBadge" class="bg-terracotta text-white px-2.5 py-1 rounded-full">EN</span>
-  <span id="siBadge" class="px-2.5 py-1">සිං</span>
- </button>
-</header>
+            <button onclick="toggleLanguage()" class="flex items-center bg-softSand border border-stone-300/70 rounded-full p-1 shadow-inner transition active:scale-95" aria-label="Switch Language">
+                <span id="lang-en-badge" class="px-2.5 py-1 rounded-full text-xs font-bold transition-all bg-terracotta text-white shadow-sm">EN</span>
+                <span id="lang-si-badge" class="px-2.5 py-1 rounded-full text-xs font-bold transition-all text-stone-600">සිං</span>
+            </button>
+        </header>
 
-<div id="toast" class="hidden fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-leafGreen text-white px-4 py-3 rounded-full shadow-lg text-sm"></div>
+        <div id="toast-box" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 hidden bg-leafGreen text-white px-4 py-2.5 rounded-full shadow-lg text-sm font-medium flex items-center gap-2 transition-all">
+            <i class="fa-solid fa-circle-check"></i>
+            <span id="toast-message">Saved!</span>
+        </div>
 
-<main class="flex-1 pb-24">
+        <main class="flex-1 pb-24 overflow-y-auto">
 
-<!-- HOME -->
-<section id="home" class="p-4 space-y-5">
- <div class="relative">
-  <i class="fa-solid fa-search absolute left-4 top-4 text-stone-400"></i>
-  <input id="search" oninput="renderRecipes()" placeholder="Search recipes or ingredients..." class="w-full bg-white border border-stone-200 rounded-2xl py-3 pl-11 pr-4 text-sm outline-none focus:border-terracotta">
- </div>
+            <!-- TAB 1: HOME -->
+            <section id="view-home" class="p-4 space-y-5 fade-in">
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"></i>
+                    <input
+                        type="text"
+                        id="search-input"
+                        oninput="handleSearch()"
+                        placeholder="Search recipes or ingredients..."
+                        class="w-full bg-white border border-stone-200 rounded-2xl py-3 pl-11 pr-10 text-sm text-richBrown placeholder-stone-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-terracotta/40 focus:border-terracotta transition"
+                    >
+                    <button id="clear-search-btn" onclick="clearSearch()" class="hidden absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-richBrown p-1">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
 
- <div id="categories" class="flex gap-2 overflow-x-auto no-scrollbar"></div>
+                <div>
+                    <div id="category-list" class="flex gap-2 overflow-x-auto no-scrollbar pb-1"></div>
+                </div>
 
- <div class="flex justify-between items-center">
-  <h2 id="recipeHeading" class="font-bold">Traditional Recipes</h2>
-  <span id="recipeCount" class="text-xs bg-softSand px-3 py-1 rounded-full">6 dishes</span>
- </div>
+                <div class="flex items-center justify-between">
+                    <h2 id="recipes-section-title" class="text-base font-bold text-richBrown">Traditional Recipes</h2>
+                    <span id="recipe-count-badge" class="text-xs font-semibold bg-softSand text-stone-600 px-2.5 py-1 rounded-full">7 dishes</span>
+                </div>
 
- <div id="recipeGrid" class="grid grid-cols-1 gap-4"></div>
+                <div id="recipe-grid" class="grid grid-cols-1 gap-4"></div>
 
- <div id="emptyHome" class="hidden text-center py-12">
-  <div class="text-5xl">🥥</div>
-  <p class="font-bold mt-3">No recipes found</p>
- </div>
-</section>
+                <div id="empty-search-state" class="hidden text-center py-12 px-4">
+                    <div class="text-5xl mb-3">🥥</div>
+                    <h3 id="empty-search-title" class="font-bold text-richBrown text-base">No recipes found</h3>
+                    <p id="empty-search-desc" class="text-xs text-stone-500 mt-1">Try searching for another dish or ingredient like "Coconut" or "Polos".</p>
+                </div>
+            </section>
 
-<!-- SAVED -->
-<section id="saved" class="hidden p-4 space-y-4">
- <div class="bg-gradient-to-r from-leafGreen to-leafGreenLight text-white p-4 rounded-2xl flex justify-between">
-  <div>
-   <h2 class="font-bold text-lg" id="savedHeading">Saved Recipes</h2>
-   <p class="text-xs">Your favorite traditional dishes</p>
-  </div>
-  <span class="text-3xl">❤️</span>
- </div>
+            <!-- TAB 2: SAVED & OWNER PENDING CONFIRMATION -->
+            <section id="view-saved" class="hidden p-4 space-y-4 fade-in">
+                <div class="bg-gradient-to-r from-leafGreen to-leafGreenLight text-white p-4 rounded-2xl shadow-md flex items-center justify-between">
+                    <div>
+                        <h2 id="saved-banner-title" class="font-bold text-lg">Saved Recipes</h2>
+                        <p id="saved-banner-sub" class="text-xs text-emerald-100 mt-0.5">Your favorite traditional dishes</p>
+                    </div>
+                    <div class="text-3xl">❤️</div>
+                </div>
 
- <div id="savedGrid" class="grid gap-4"></div>
- <div id="emptySaved" class="hidden text-center py-12 bg-white rounded-2xl">
-  <div class="text-4xl">🔖</div>
-  <p class="font-bold mt-3">No saved recipes yet</p>
-  <button onclick="switchTab('home')" class="mt-4 bg-terracotta text-white px-5 py-2 rounded-full">Explore Recipes</button>
- </div>
+                <div id="saved-grid" class="grid grid-cols-1 gap-4"></div>
 
- <div class="mt-6 space-y-3">
-  <div class="bg-amber-50 border border-amber-200 p-3 rounded-2xl flex justify-between">
-   <div>
-    <h3 class="font-bold text-sm">Pending Confirmation (තහවුරු කිරීමට)</h3>
-    <p class="text-xs text-stone-600">Review submitted recipes</p>
-   </div>
-   <span id="pendingCount" class="bg-terracotta text-white rounded-full px-3 py-1 text-xs">0</span>
-  </div>
-  <div id="pendingList" class="space-y-3"></div>
- </div>
-</section>
+                <div id="empty-saved-state" class="hidden text-center py-14 px-6 bg-white rounded-3xl border border-stone-100 shadow-sm">
+                    <div class="w-16 h-16 bg-softSand rounded-full flex items-center justify-center text-3xl mx-auto mb-3">🔖</div>
+                    <h3 id="empty-saved-title" class="font-bold text-richBrown text-base">No saved recipes yet</h3>
+                    <p id="empty-saved-desc" class="text-xs text-stone-500 mt-1.5 leading-relaxed">Tap the heart icon on any recipe card to save it here for quick access while cooking.</p>
+                    <button onclick="switchTab('home')" id="explore-btn" class="mt-4 bg-terracotta text-white text-xs font-bold px-5 py-2.5 rounded-full shadow hover:bg-terracottaDark transition">
+                        Explore Recipes
+                    </button>
+                </div>
 
-<!-- ADD RECIPE -->
-<section id="add" class="hidden p-4 space-y-4">
- <div class="bg-softSand p-4 rounded-2xl">
-  <h2 class="font-bold text-lg">Share a Traditional Recipe</h2>
-  <p class="text-xs text-stone-600">Add your family's secret recipe to Hela Rasa</p>
- </div>
+                <!-- OWNER ACCESS BAR -->
+                <div class="pt-3 border-t border-stone-200/80 flex items-center justify-between">
+                    <span id="owner-status-label" class="text-[11px] font-semibold text-stone-400">Owner Access</span>
+                    <button id="owner-toggle-btn" onclick="handleOwnerToggle()" class="text-xs font-bold bg-softSand hover:bg-stone-200 text-richBrown px-3.5 py-1.5 rounded-full border border-stone-200 transition active:scale-95">
+                        <i class="fa-solid fa-lock mr-1 text-terracotta"></i>
+                        <span>Owner Mode</span>
+                    </button>
+                </div>
 
- <form id="recipeForm" class="bg-white p-4 rounded-3xl shadow-sm space-y-4">
-  <div>
-   <label class="text-xs font-bold">Dish Name *</label>
-   <input id="dishName" required class="w-full bg-warmCream border rounded-xl p-3 text-sm mt-1" placeholder="e.g. Pol Sambol / පොල් සම්බෝල">
-  </div>
+                <!-- PENDING RECIPES (VISIBLE ONLY WHEN OWNER MODE IS UNLOCKED) -->
+                <div id="pending-section" class="hidden space-y-3">
+                    <div class="bg-amber-50 border border-amber-200/80 p-3.5 rounded-2xl flex items-center justify-between">
+                        <div>
+                            <h3 class="font-bold text-sm text-richBrown">Pending Confirmation (තහවුරු කිරීමට)</h3>
+                            <p class="text-[11px] text-stone-600 mt-0.5">Check and confirm recipes before showing on Main List</p>
+                        </div>
+                        <span id="pending-count-badge" class="text-xs font-extrabold bg-terracotta text-white px-2.5 py-0.5 rounded-full">0</span>
+                    </div>
+                    <div id="pending-list" class="space-y-3"></div>
+                </div>
+            </section>
 
-  <div class="grid grid-cols-2 gap-3">
-   <div>
-    <label class="text-xs font-bold">Category</label>
-    <select id="dishCategory" class="w-full bg-warmCream border rounded-xl p-3 text-sm mt-1">
-     <option>Breakfast</option>
-     <option>Curries</option>
-     <option>Sweets</option>
-    </select>
-   </div>
-   <div>
-    <label class="text-xs font-bold">Dish Icon</label>
-    <select id="dishEmoji" class="w-full bg-warmCream border rounded-xl p-3 text-sm mt-1">
-     <option>🍛</option><option>🥥</option><option>🍩</option>
-     <option>🥗</option><option>🍮</option><option>🍆</option>
-    </select>
-   </div>
-  </div>
+            <!-- TAB 3: ADD RECIPE -->
+            <section id="view-add" class="hidden p-4 space-y-4 fade-in">
+                <div class="bg-softSand border border-stone-200/80 p-4 rounded-2xl">
+                    <h2 id="add-form-title" class="font-bold text-lg text-richBrown">Share a Traditional Recipe</h2>
+                    <p id="add-form-sub" class="text-xs text-stone-600 mt-0.5">Add your family's secret recipe to Hela Rasa</p>
+                </div>
 
-  <div class="grid grid-cols-3 gap-2">
-   <div><label class="text-xs font-bold">Prep (mins)</label><input id="prep" type="number" min="1" value="15" required class="w-full border rounded-xl p-2 mt-1"></div>
-   <div><label class="text-xs font-bold">Cook (mins)</label><input id="cook" type="number" min="0" value="20" required class="w-full border rounded-xl p-2 mt-1"></div>
-   <div><label class="text-xs font-bold">Servings</label><input id="servings" type="number" min="1" value="4" required class="w-full border rounded-xl p-2 mt-1"></div>
-  </div>
+                <form id="add-recipe-form" onsubmit="handleAddRecipe(event)" class="bg-white p-4 rounded-3xl shadow-sm border border-stone-100 space-y-4">
+                    <div>
+                        <label id="lbl-name" class="block text-xs font-bold text-richBrown mb-1.5">Dish Name (English / Sinhala) *</label>
+                        <input type="text" id="inp-name" required placeholder="e.g., Pol Sambol / පොල් සම්බෝල" class="w-full bg-warmCream border border-stone-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-terracotta">
+                    </div>
 
-  <div>
-   <label class="text-xs font-bold">Ingredients (one per line) *</label>
-   <textarea id="ingredients" required rows="4" class="w-full border rounded-xl p-3 mt-1 text-sm" placeholder="2 cups coconut&#10;3 red onions&#10;Salt"></textarea>
-  </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label id="lbl-category" class="block text-xs font-bold text-richBrown mb-1.5">Category *</label>
+                            <select id="inp-category" class="w-full bg-warmCream border border-stone-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-terracotta">
+                                <option value="Breakfast">Breakfast (උදෑසන ආහාර)</option>
+                                <option value="Curries">Curries (ව්‍යංජන)</option>
+                                <option value="Sweets">Sweets (රසකැවිලි)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label id="lbl-emoji" class="block text-xs font-bold text-richBrown mb-1.5">Dish Icon</label>
+                            <select id="inp-emoji" class="w-full bg-warmCream border border-stone-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-terracotta">
+                                <option value="🍛">🍛 Curry / Rice</option>
+                                <option value="🥥">🥥 Coconut Dish</option>
+                                <option value="🍩">🍩 Sweet / Kavum</option>
+                                <option value="🥗">🥗 Sambol / Mallung</option>
+                                <option value="🍮">🍮 Pudding / Dessert</option>
+                                <option value="🍵">🍵 Herbal Drink</option>
+                                <option value="🍆">🍆 Brinjal / Moju</option>
+                            </select>
+                        </div>
+                    </div>
 
-  <div>
-   <label class="text-xs font-bold">Cooking Steps (one per line) *</label>
-   <textarea id="steps" required rows="4" class="w-full border rounded-xl p-3 mt-1 text-sm" placeholder="Prepare ingredients.&#10;Mix everything together."></textarea>
-  </div>
+                    <div class="grid grid-cols-3 gap-2.5">
+                        <div>
+                            <label id="lbl-prep" class="block text-[11px] font-bold text-richBrown mb-1">Prep (mins) *</label>
+                            <input type="number" id="inp-prep" required min="1" value="15" class="w-full bg-warmCream border border-stone-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-terracotta">
+                        </div>
+                        <div>
+                            <label id="lbl-cook" class="block text-[11px] font-bold text-richBrown mb-1">Cook (mins) *</label>
+                            <input type="number" id="inp-cook" required min="0" value="20" class="w-full bg-warmCream border border-stone-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-terracotta">
+                        </div>
+                        <div>
+                            <label id="lbl-servings" class="block text-[11px] font-bold text-richBrown mb-1">Servings *</label>
+                            <input type="number" id="inp-servings" required min="1" value="4" class="w-full bg-warmCream border border-stone-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-terracotta">
+                        </div>
+                    </div>
 
-  <button class="w-full bg-terracotta text-white font-bold py-3.5 rounded-2xl">
-   <i class="fa-solid fa-plus"></i> Submit for Confirmation
-  </button>
- </form>
-</section>
+                    <div>
+                        <label id="lbl-ingredients" class="block text-xs font-bold text-richBrown mb-1">Ingredients (One per line) *</label>
+                        <textarea id="inp-ingredients" required rows="4" placeholder="2 cups scraped coconut&#10;3 red onions&#10;1 tsp chili powder&#10;Salt to taste" class="w-full bg-warmCream border border-stone-200 rounded-xl p-3 text-sm focus:outline-none focus:border-terracotta"></textarea>
+                    </div>
 
-</main>
+                    <div>
+                        <label id="lbl-steps" class="block text-xs font-bold text-richBrown mb-1">Cooking Steps (One per line) *</label>
+                        <textarea id="inp-steps" required rows="4" placeholder="Grind red onions, chili powder, and salt together.&#10;Add scraped coconut and mix well.&#10;Squeeze lime juice and serve." class="w-full bg-warmCream border border-stone-200 rounded-xl p-3 text-sm focus:outline-none focus:border-terracotta"></textarea>
+                    </div>
 
-<!-- RECIPE MODAL -->
-<div id="modal" class="hidden fixed inset-0 z-40 bg-black/50">
- <div class="w-full max-w-[480px] mx-auto bg-warmCream h-full flex flex-col">
-  <div class="bg-white p-3 flex justify-between items-center">
-   <button onclick="closeModal()" class="w-10 h-10 bg-softSand rounded-full"><i class="fa-solid fa-arrow-left"></i></button>
-   <span id="modalCategory" class="text-xs font-bold text-leafGreen"></span>
-   <button id="modalFav" onclick="toggleModalFavorite()" class="text-xl p-2">♡</button>
-  </div>
+                    <button type="submit" id="btn-submit-recipe" class="w-full bg-terracotta hover:bg-terracottaDark text-white font-bold py-3.5 rounded-2xl shadow-md transition active:scale-[0.98] flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Submit for Confirmation</span>
+                    </button>
+                </form>
+            </section>
+        </main>
 
-  <div class="flex-1 overflow-y-auto pb-10">
-   <div class="bg-gradient-to-br from-terracotta to-amber-700 p-6 text-white">
-    <div class="flex items-center gap-4">
-     <span id="modalEmoji" class="text-6xl"></span>
-     <div>
-      <h2 id="modalTitle" class="font-extrabold text-2xl"></h2>
-      <p id="modalSubtitle" class="text-sm text-amber-100"></p>
-      <span id="modalDifficulty" class="text-xs bg-black/25 px-3 py-1 rounded-full inline-block mt-2"></span>
-     </div>
+        <!-- DETAIL MODAL -->
+        <div id="recipe-modal" class="fixed inset-0 z-40 hidden justify-center bg-black/50 backdrop-blur-xs">
+            <div class="w-full max-w-[480px] bg-warmCream h-full flex flex-col overflow-hidden shadow-2xl animate-fadeIn">
+                <div class="flex items-center justify-between px-4 py-3 bg-white/90 backdrop-blur border-b border-stone-200 z-10">
+                    <button onclick="closeRecipeModal()" class="w-10 h-10 rounded-full bg-softSand flex items-center justify-center text-richBrown hover:bg-stone-200 transition">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+                    <span id="modal-category-badge" class="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-leafGreen/10 text-leafGreen">Category</span>
+                    <button id="modal-fav-btn" onclick="toggleFavoriteFromModal()" class="w-10 h-10 rounded-full bg-softSand flex items-center justify-center text-lg transition">
+                        <i class="fa-regular fa-heart text-stone-500"></i>
+                    </button>
+                </div>
+
+                <div id="modal-scroll-area" class="flex-1 overflow-y-auto pb-10">
+                    <div id="modal-hero-bg" class="p-6 text-white relative overflow-hidden bg-gradient-to-br from-terracotta to-amber-700">
+                        <div class="relative z-10 flex items-center gap-4">
+                            <div id="modal-emoji" class="w-20 h-20 rounded-3xl bg-white/20 backdrop-blur-md flex items-center justify-center text-5xl shadow-inner border border-white/30 shrink-0">
+                                🍚
+                            </div>
+                            <div>
+                                <h2 id="modal-title" class="text-2xl font-extrabold leading-tight">Kiribath</h2>
+                                <p id="modal-subtitle" class="text-sm text-amber-100 font-medium mt-0.5">කිරිබත් • Milk Rice</p>
+                                <span id="modal-difficulty" class="inline-block mt-2 text-[11px] font-bold bg-black/25 px-2.5 py-0.5 rounded-full">Easy</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 divide-x divide-stone-200 bg-white mx-4 -mt-4 rounded-2xl shadow-md border border-stone-100 py-3 relative z-20 text-center">
+                        <div>
+                            <p id="stat-prep-lbl" class="text-[10px] uppercase font-bold text-stone-400">Prep Time</p>
+                            <p id="stat-prep-val" class="text-sm font-extrabold text-richBrown mt-0.5">10 mins</p>
+                        </div>
+                        <div>
+                            <p id="stat-cook-lbl" class="text-[10px] uppercase font-bold text-stone-400">Cook Time</p>
+                            <p id="stat-cook-val" class="text-sm font-extrabold text-richBrown mt-0.5">25 mins</p>
+                        </div>
+                        <div>
+                            <p id="stat-serv-lbl" class="text-[10px] uppercase font-bold text-stone-400">Servings</p>
+                            <p id="stat-serv-val" class="text-sm font-extrabold text-richBrown mt-0.5">6 People</p>
+                        </div>
+                    </div>
+
+                    <div class="px-5 mt-5">
+                        <p id="modal-desc" class="text-sm text-stone-600 leading-relaxed"></p>
+                    </div>
+
+                    <div class="px-5 mt-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 id="modal-ing-title" class="text-base font-extrabold text-richBrown flex items-center gap-2">
+                                <span class="w-2 h-5 bg-terracotta rounded-full inline-block"></span>
+                                Ingredients
+                            </h3>
+                            <span id="modal-ing-hint" class="text-[11px] text-stone-400 font-medium">Tap to check off</span>
+                        </div>
+                        <div id="modal-ingredients-list" class="bg-white rounded-2xl border border-stone-200/80 divide-y divide-stone-100 shadow-xs overflow-hidden"></div>
+                    </div>
+
+                    <div class="px-5 mt-6">
+                        <h3 id="modal-steps-title" class="text-base font-extrabold text-richBrown flex items-center gap-2 mb-3">
+                            <span class="w-2 h-5 bg-leafGreen rounded-full inline-block"></span>
+                            Cooking Instructions
+                        </h3>
+                        <div id="modal-steps-list" class="space-y-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM NAV -->
+        <nav class="fixed bottom-0 w-full max-w-[480px] bg-white/95 backdrop-blur-md border-t border-stone-200 px-6 py-2.5 flex justify-around items-center z-30 shadow-[0_-4px_15px_rgba(0,0,0,0.04)]">
+            <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center gap-1 text-terracotta transition px-3 py-1">
+                <i class="fa-solid fa-house text-lg"></i>
+                <span id="nav-lbl-home" class="text-[11px] font-bold">Home</span>
+            </button>
+
+            <button onclick="switchTab('saved')" id="nav-saved" class="flex flex-col items-center gap-1 text-stone-400 hover:text-richBrown transition px-3 py-1 relative">
+                <i class="fa-solid fa-heart text-lg"></i>
+                <span id="nav-lbl-saved" class="text-[11px] font-bold">Saved</span>
+                <span id="saved-dot" class="hidden absolute top-1 right-3 w-2 h-2 bg-terracotta rounded-full"></span>
+            </button>
+
+            <button onclick="switchTab('add')" id="nav-add" class="flex flex-col items-center gap-1 text-stone-400 hover:text-richBrown transition px-3 py-1">
+                <i class="fa-solid fa-circle-plus text-lg"></i>
+                <span id="nav-lbl-add" class="text-[11px] font-bold">Add Recipe</span>
+            </button>
+        </nav>
+
     </div>
-   </div>
-
-   <div class="grid grid-cols-3 bg-white mx-4 -mt-3 rounded-2xl shadow p-3 text-center">
-    <div><p class="text-[10px] text-stone-400">PREP</p><b id="modalPrep"></b></div>
-    <div><p class="text-[10px] text-stone-400">COOK</p><b id="modalCook"></b></div>
-    <div><p class="text-[10px] text-stone-400">SERVINGS</p><b id="modalServings"></b></div>
-   </div>
-
-   <div class="p-5">
-    <h3 class="font-extrabold mb-3">🥥 Ingredients</h3>
-    <div id="modalIngredients" class="bg-white rounded-2xl border divide-y"></div>
-   </div>
-
-   <div class="px-5 pb-5">
-    <h3 class="font-extrabold mb-3">👩‍🍳 Cooking Instructions</h3>
-    <div id="modalSteps" class="space-y-3"></div>
-   </div>
-  </div>
- </div>
-</div>
-
-<!-- NAVIGATION -->
-<nav class="fixed bottom-0 w-full max-w-[480px] bg-white border-t px-6 py-3 flex justify-around z-30">
- <button onclick="switchTab('home')" id="navHome" class="flex flex-col items-center text-terracotta">
-  <i class="fa-solid fa-house text-lg"></i><span class="text-xs font-bold">Home</span>
- </button>
- <button onclick="switchTab('saved')" id="navSaved" class="flex flex-col items-center text-stone-400">
-  <i class="fa-solid fa-heart text-lg"></i><span class="text-xs font-bold">Saved</span>
- </button>
- <button onclick="switchTab('add')" id="navAdd" class="flex flex-col items-center text-stone-400">
-  <i class="fa-solid fa-circle-plus text-lg"></i><span class="text-xs font-bold">Add Recipe</span>
- </button>
-</nav>
-
-</div>
-
-<script>
-
-// ====================================
-// DEFAULT RECIPES
-// ====================================
-
-const DEFAULT_RECIPES = [
-
-{
- id:'batu-moju',category:'Curries',emoji:'🍆',
- prep:15,cook:20,servings:4,difficulty:'Easy',
- title:{en:'Batu Moju (Brinjal Moju)',si:'බටු මෝජු'},
- subtitle:{en:'Sweet, Tangy & Spicy Brinjal Relish',si:'පැණි, ඇඹුල් සහ සැර වම්බටු මෝජු'},
- description:{en:'A classic Sri Lankan sweet and sour brinjal relish.',si:'ශ්‍රී ලාංකික සාම්ප්‍රදායික රසවත් වම්බටු මෝජුවකි.'},
- ingredients:{
- en:['300g brinjals','10 red onions','4 green chilies','3 tbsp vinegar','1 tsp sugar','Turmeric powder','Chili powder','Mustard seeds','Coconut oil and salt'],
- si:['වම්බටු ග්‍රෑම් 300ක්','රතු ළූණු ගෙඩි 10ක්','අමු මිරිස් කරල් 4ක්','විනාකිරි මේස හැඳි 3ක්','සීනි තේ හැඳි 1ක්','කහ කුඩු','මිරිස් කුඩු','අබ ඇට','පොල් තෙල් සහ ලුණු']
- },
- steps:{
- en:['Cut brinjals into strips and season with salt and turmeric.','Fry until golden brown.','Fry mustard seeds, onions and green chilies.','Add vinegar, sugar and spices.','Mix in the fried brinjals and serve.'],
- si:['වම්බටු දිගට කපා ලුණු සහ කහ තවරන්න.','රන්වන් පැහැ වන තුරු බැදගන්න.','අබ, ළූණු සහ අමු මිරිස් තෙලට දමන්න.','විනාකිරි, සීනි සහ තුනපහ එක් කරන්න.','බැදගත් වම්බටු එක් කර හොඳින් කලවම් කරන්න.']
- }
-},
-
-{
- id:'kiribath',category:'Breakfast',emoji:'🍚',
- prep:10,cook:25,servings:6,difficulty:'Easy',
- title:{en:'Kiribath (Milk Rice)',si:'කිරිබත්'},
- subtitle:{en:'Traditional Auspicious Rice Dish',si:'සාම්ප්‍රදායික මංගල කිරිබත්'},
- description:{en:'Traditional Sri Lankan milk rice made with coconut milk.',si:'පොල් කිරි යොදා සාදාගන්නා සාම්ප්‍රදායික කිරිබත්.'},
- ingredients:{
- en:['2 cups white rice','3 cups water','1 ½ cups thick coconut milk','1 tsp salt','Pandan leaf'],
- si:['සුදු කැකුළු හාල් කෝප්ප 2ක්','වතුර කෝප්ප 3ක්','උකු පොල් කිරි කෝප්ප 1 ½ක්','ලුණු තේ හැඳි 1ක්','රම්පේ කැබැල්ලක්']
- },
- steps:{
- en:['Wash rice thoroughly.','Cook rice with water and pandan leaf until soft.','Add salt to coconut milk.','Add coconut milk to rice and cook gently until creamy.','Spread on a plate, cool and cut into diamond shapes.'],
- si:['හාල් හොඳින් සෝදාගන්න.','වතුර සහ රම්පේ සමඟ බත පිසගන්න.','පොල් කිරිවලට ලුණු එක් කරන්න.','බතට පොල් කිරි එක් කර උරාගන්නා තුරු පිසගන්න.','පිඟානකට දමා තුනී කර දියමන්ති හැඩයට කපාගන්න.']
- }
-},
-
-{
- id:'polos',category:'Curries',emoji:'🍛',
- prep:25,cook:60,servings:5,difficulty:'Medium',
- title:{en:'Polos Ambula',si:'පොළොස් ඇඹුල'},
- subtitle:{en:'Slow Cooked Young Jackfruit Curry',si:'සාම්ප්‍රදායික පොළොස් ව්‍යංජනය'},
- description:{en:'A traditional young jackfruit curry cooked with Sri Lankan spices.',si:'ශ්‍රී ලාංකික තුනපහ සහ පොල් කිරි යොදා සාදන පොළොස් ව්‍යංජනයකි.'},
- ingredients:{
- en:['500g young jackfruit','2 tbsp roasted curry powder','1 tsp chili powder','3 goraka pieces','1 cup thick coconut milk','2 cups thin coconut milk','Onion, garlic and ginger','Curry leaves and pandan','Salt'],
- si:['ළපටි පොළොස් ග්‍රෑම් 500ක්','බැදපු තුනපහ මේස හැඳි 2ක්','මිරිස් කුඩු තේ හැඳි 1ක්','ගොරකා බිකි 3ක්','උකු පොල් කිරි කෝප්ප 1ක්','දිය කිරි කෝප්ප 2ක්','ළූණු, සුදුළූණු සහ ඉඟුරු','කරපිංචා සහ රම්පේ','ලුණු']
- },
- steps:{
- en:['Mix jackfruit with spices and goraka.','Place in a pot with onion, garlic, curry leaves and thin coconut milk.','Cook gently until tender.','Add thick coconut milk and simmer until gravy thickens.'],
- si:['පොළොස් කැබලිවලට තුනපහ සහ ගොරකා එක් කරන්න.','ළූණු, සුදුළූණු, කරපිංචා සහ දිය කිරි සමඟ භාජනයකට දමන්න.','මඳ ගින්නේ හොඳින් තැම්බෙන තුරු පිසගන්න.','උකු පොල් කිරි එක් කර හොද්ද උකු වන තුරු පිසගන්න.']
- }
-},
-
-{
- id:'kavum',category:'Sweets',emoji:'🍩',
- prep:30,cook:30,servings:15,difficulty:'Hard',
- title:{en:'Konda Kavum',si:'කොණ්ඩ කැවුම්'},
- subtitle:{en:'Traditional Sri Lankan Oil Cake',si:'සිංහල අවුරුදු රසකැවිලි'},
- description:{en:'Traditional sweet made with rice flour and Kithul treacle.',si:'හාල් පිටි සහ කිතුල් පැණි යොදා සාදාගන්නා සාම්ප්‍රදායික කැවුම්.'},
- ingredients:{
- en:['2 cups rice flour','2 tbsp wheat flour','1 cup Kithul treacle','¼ cup warm water','Cardamom','Salt','Coconut oil'],
- si:['හාල් පිටි කෝප්ප 2ක්','පාන් පිටි මේස හැඳි 2ක්','කිතුල් පැණි කෝප්ප 1ක්','මඳ රස්නේ වතුර කෝප්ප ¼ක්','එනසාල්','ලුණු','පොල් තෙල්']
- },
- steps:{
- en:['Warm the treacle gently.','Mix rice flour, wheat flour, cardamom and salt.','Add treacle and water to make batter.','Rest the batter for 1–2 hours.','Fry in coconut oil and shape the top knot carefully.'],
- si:['කිතුල් පැණි මඳක් රත් කරගන්න.','හාල් පිටි, පාන් පිටි, එනසාල් සහ ලුණු මිශ්‍ර කරන්න.','පැණි සහ වතුර එක් කර මිශ්‍රණයක් සාදාගන්න.','පැය 1-2ක් පදම් වෙන්නට තබන්න.','පොල් තෙලේ බැද කොණ්ඩය හැඩ කරගන්න.']
- }
-},
-
-{
- id:'kokis',category:'Sweets',emoji:'🏵️',
- prep:15,cook:25,servings:20,difficulty:'Medium',
- title:{en:'Kokis',si:'කොකිස්'},
- subtitle:{en:'Crispy Rosette Cookies',si:'කරකර ගා හැපෙන කොකිස්'},
- description:{en:'Golden crispy traditional Sri Lankan New Year snack.',si:'ශ්‍රී ලාංකික අලුත් අවුරුදු මේසයේ ජනප්‍රිය රසකැවිල්ලකි.'},
- ingredients:{
- en:['2 cups rice flour','1 ½ cups coconut milk','1 egg','½ tsp turmeric','Salt','Coconut oil'],
- si:['හාල් පිටි කෝප්ප 2ක්','පොල් කිරි කෝප්ප 1 ½ක්','බිත්තරයක්','කහ කුඩු තේ හැඳි ½ක්','ලුණු','පොල් තෙල්']
- },
- steps:{
- en:['Mix flour, turmeric, salt, egg and coconut milk.','Heat the kokis mould in oil.','Dip the mould into batter.','Fry in hot oil until crispy and golden.'],
- si:['හාල් පිටි, කහ, ලුණු, බිත්තරය සහ පොල් කිරි මිශ්‍ර කරන්න.','කොකිස් අච්චුව තෙලේ රත් කරගන්න.','අච්චුව පිටි මිශ්‍රණයේ ගිල්වන්න.','රත් වූ තෙලේ රන්වන් පැහැ වන තුරු බැදගන්න.']
- }
-},
-
-{
- id:'watalappan',category:'Sweets',emoji:'🍮',
- prep:15,cook:40,servings:6,difficulty:'Easy',
- title:{en:'Watalappan',si:'වටලප්පන්'},
- subtitle:{en:'Spiced Coconut Jaggery Custard',si:'කිතුල් හකුරු සහ පොල් කිරි අතුරුපස'},
- description:{en:'A rich Sri Lankan steamed custard made with Kithul jaggery, coconut milk and spices.',si:'කිතුල් හකුරු, පොල් කිරි සහ කුළුබඩු යොදා වාෂ්පයෙන් තම්බා සාදන රසවත් අතුරුපසකි.'},
- ingredients:{
- en:['250g Kithul jaggery','1 cup thick coconut milk','5 eggs','½ tsp cardamom','¼ tsp nutmeg','Salt','Roasted cashews'],
- si:['කිතුල් හකුරු ග්‍රෑම් 250ක්','උකු පොල් කිරි කෝප්ප 1ක්','බිත්තර 5ක්','එනසාල් තේ හැඳි ½ක්','සාදික්කා කුඩු තේ හැඳි ¼ක්','ලුණු ස්වල්පයක්','බැදගත් කජු']
- },
- steps:{
- en:['Dissolve jaggery in coconut milk and strain.','Lightly beat the eggs.','Mix in the jaggery mixture and spices.','Pour into a greased heatproof bowl and cover with foil.','Steam for 35–40 minutes until set. Cool and garnish with cashews.'],
- si:['කිතුල් හකුරු පොල් කිරි සමඟ දියකර පෙරාගන්න.','බිත්තර පෙණ නොනැඟෙන සේ සෙමින් ගසාගන්න.','හකුරු මිශ්‍රණය සහ කුළුබඩු එක් කරන්න.','තෙල් ගෑ භාජනයකට දමා ෆොයිල්වලින් වසාගන්න.','විනාඩි 35-40ක් වාෂ්පයෙන් තම්බා නිවුණු පසු කජු දමා සරසන්න.']
- }
-}
-
-];
-
-// ====================================
-// APP STATE
-// ====================================
-
-let recipes = JSON.parse(localStorage.getItem('helaRecipes') || 'null') || DEFAULT_RECIPES;
-let saved = JSON.parse(localStorage.getItem('helaSaved') || '[]');
-let pending = JSON.parse(localStorage.getItem('helaPending') || '[]');
-
-let language = 'en';
-let category = 'All';
-let currentRecipe = null;
-
-const translations = {
- en:{
-  subtitle:'Authentic Sri Lankan Cuisine',
-  home:'Home',saved:'Saved',add:'Add Recipe',
-  heading:'Traditional Recipes'
- },
- si:{
-  subtitle:'සාම්ප්‍රදායික ශ්‍රී ලාංකික ආහාර',
-  home:'මුල් පිටුව',saved:'සුරැකි',add:'වට්ටෝරුවක් එක් කරන්න',
-  heading:'සාම්ප්‍රදායික වට්ටෝරු'
- }
-};
-
-function persist(){
- localStorage.setItem('helaRecipes',JSON.stringify(recipes));
- localStorage.setItem('helaSaved',JSON.stringify(saved));
- localStorage.setItem('helaPending',JSON.stringify(pending));
-}
-
-function toast(message){
- const box=document.getElementById('toast');
- box.textContent='✓ '+message;
- box.classList.remove('hidden');
- setTimeout(()=>box.classList.add('hidden'),2200);
-}
-
-// ====================================
-// LANGUAGE
-// ====================================
-
-function toggleLanguage(){
- language=language==='en'?'si':'en';
- document.getElementById('enBadge').className=language==='en'?'bg-terracotta text-white px-2.5 py-1 rounded-full':'px-2.5 py-1';
- document.getElementById('siBadge').className=language==='si'?'bg-terracotta text-white px-2.5 py-1 rounded-full':'px-2.5 py-1';
-
- document.getElementById('subtitle').textContent=translations[language].subtitle;
- document.getElementById('recipeHeading').textContent=translations[language].heading;
-
- document.getElementById('navHome').querySelector('span').textContent=translations[language].home;
- document.getElementById('navSaved').querySelector('span').textContent=translations[language].saved;
- document.getElementById('navAdd').querySelector('span').textContent=translations[language].add;
-
- renderCategories();
- renderRecipes();
- renderSaved();
-
- if(currentRecipe) openRecipe(currentRecipe.id);
-}
-
-// ====================================
-// CATEGORIES
-// ====================================
-
-function renderCategories(){
- const cats=['All','Breakfast','Curries','Sweets'];
- const names={
-  All:{en:'All',si:'සියල්ල'},
-  Breakfast:{en:'Breakfast',si:'උදෑසන ආහාර'},
-  Curries:{en:'Curries',si:'ව්‍යංජන'},
-  Sweets:{en:'Sweets',si:'රසකැවිලි'}
- };
-
- document.getElementById('categories').innerHTML=cats.map(c=>`
-  <button onclick="setCategory('${c}')"
-  class="shrink-0 px-4 py-2 rounded-full text-xs font-bold ${category===c?'bg-terracotta text-white':'bg-white border text-stone-600'}">
-  ${names[c][language]}
-  </button>
- `).join('');
-}
-
-function setCategory(c){
- category=c;
- renderCategories();
- renderRecipes();
-}
-
-// ====================================
-// RECIPE CARDS
-// ====================================
-
-function recipeName(r){
- return r.title[language] || r.title.en;
-}
-
-function renderCard(r){
- const favorite=saved.includes(r.id);
-
- return `
- <div class="bg-white rounded-3xl overflow-hidden border border-stone-100 shadow-sm fade-in">
-  <div class="h-32 bg-gradient-to-br from-amber-100 to-orange-200 flex items-center justify-center relative">
-   <span class="text-7xl">${r.emoji}</span>
-   <button onclick="toggleFavorite('${r.id}')"
-    class="absolute top-3 right-3 bg-white w-10 h-10 rounded-full shadow flex items-center justify-center text-xl">
-    ${favorite?'❤️':'♡'}
-   </button>
-   <span class="absolute bottom-3 left-3 bg-white/90 px-3 py-1 rounded-full text-xs font-bold">${r.category}</span>
-  </div>
-  <div class="p-4">
-   <h3 class="font-extrabold text-base">${recipeName(r)}</h3>
-   <p class="text-xs text-stone-500 mt-1">${r.subtitle[language] || r.subtitle.en}</p>
-   <div class="flex justify-between items-center mt-4">
-    <span class="text-xs text-stone-500"><i class="fa-regular fa-clock"></i> ${r.prep+r.cook} mins</span>
-    <button onclick="openRecipe('${r.id}')" class="bg-terracotta text-white text-xs font-bold px-4 py-2 rounded-full">View Recipe →</button>
-   </div>
-  </div>
- </div>`;
-}
-
-function renderRecipes(){
- const query=document.getElementById('search').value.toLowerCase();
-
- const filtered=recipes.filter(r=>{
-  const text=[
-   r.title.en,r.title.si,r.subtitle.en,r.subtitle.si,
-   ...r.ingredients.en,...r.ingredients.si
-  ].join(' ').toLowerCase();
-
-  return (category==='All'||r.category===category) && text.includes(query);
- });
-
- document.getElementById('recipeGrid').innerHTML=filtered.map(renderCard).join('');
- document.getElementById('recipeCount').textContent=filtered.length+' dishes';
- document.getElementById('emptyHome').classList.toggle('hidden',filtered.length!==0);
-}
-
-// ====================================
-// FAVORITES
-// ====================================
-
-function toggleFavorite(id){
- if(saved.includes(id)){
-  saved=saved.filter(x=>x!==id);
-  toast('Removed from saved recipes');
- }else{
-  saved.push(id);
-  toast('Recipe saved!');
- }
- persist();
- renderRecipes();
- renderSaved();
-}
-
-function toggleModalFavorite(){
- if(!currentRecipe)return;
- toggleFavorite(currentRecipe.id);
- openRecipe(currentRecipe.id);
-}
-
-function renderSaved(){
- const list=recipes.filter(r=>saved.includes(r.id));
-
- document.getElementById('savedGrid').innerHTML=list.map(renderCard).join('');
- document.getElementById('emptySaved').classList.toggle('hidden',list.length!==0);
-
- renderPending();
-}
-
-// ====================================
-// RECIPE DETAILS
-// ====================================
-
-function openRecipe(id){
- const r=recipes.find(x=>x.id===id);
- if(!r)return;
-
- currentRecipe=r;
-
- document.getElementById('modal').classList.remove('hidden');
- document.getElementById('modalCategory').textContent=r.category;
- document.getElementById('modalEmoji').textContent=r.emoji;
- document.getElementById('modalTitle').textContent=recipeName(r);
- document.getElementById('modalSubtitle').textContent=r.subtitle[language]||r.subtitle.en;
- document.getElementById('modalDifficulty').textContent=r.difficulty;
- document.getElementById('modalPrep').textContent=r.prep+' min';
- document.getElementById('modalCook').textContent=r.cook+' min';
- document.getElementById('modalServings').textContent=r.servings;
- document.getElementById('modalFav').textContent=saved.includes(id)?'❤️':'♡';
-
- document.getElementById('modalIngredients').innerHTML=
- r.ingredients[language].map((item,i)=>`
- <label class="flex gap-3 items-center p-3 text-sm cursor-pointer">
-  <input type="checkbox" class="accent-terracotta w-4 h-4">
-  <span>${item}</span>
- </label>
- `).join('');
-
- document.getElementById('modalSteps').innerHTML=
- r.steps[language].map((step,i)=>`
- <div class="flex gap-3 bg-white p-3 rounded-xl border">
-  <span class="w-7 h-7 rounded-full bg-leafGreen text-white flex items-center justify-center shrink-0 text-xs font-bold">${i+1}</span>
-  <p class="text-sm leading-relaxed">${step}</p>
- </div>
- `).join('');
-
- document.getElementById('modal').querySelector('.flex-1').scrollTop=0;
-}
-
-function closeModal(){
- document.getElementById('modal').classList.add('hidden');
- currentRecipe=null;
-}
-
-// ====================================
-// NAVIGATION
-// ====================================
-
-function switchTab(tab){
- ['home','saved','add'].forEach(id=>{
-  document.getElementById(id).classList.toggle('hidden',id!==tab);
- });
-
- ['Home','Saved','Add'].forEach(name=>{
-  const active=name.toLowerCase()===tab;
-  document.getElementById('nav'+name).className=
-   'flex flex-col items-center '+(active?'text-terracotta':'text-stone-400');
- });
-
- if(tab==='saved')renderSaved();
- if(tab==='home')renderRecipes();
-}
-
-// ====================================
-// ADD RECIPE
-// ====================================
-
-document.getElementById('recipeForm').addEventListener('submit',function(e){
- e.preventDefault();
-
- const name=document.getElementById('dishName').value.trim();
- const ingredients=document.getElementById('ingredients').value.split('\n').map(x=>x.trim()).filter(Boolean);
- const steps=document.getElementById('steps').value.split('\n').map(x=>x.trim()).filter(Boolean);
-
- if(!name||!ingredients.length||!steps.length){
-  toast('Please fill in all required fields');
-  return;
- }
-
- const newRecipe={
-  id:'user-'+Date.now(),
-  category:document.getElementById('dishCategory').value,
-  emoji:document.getElementById('dishEmoji').value,
-  prep:Number(document.getElementById('prep').value),
-  cook:Number(document.getElementById('cook').value),
-  servings:Number(document.getElementById('servings').value),
-  difficulty:'Easy',
-  title:{en:name,si:name},
-  subtitle:{en:'Community Recipe',si:'සාමාජික වට්ටෝරුව'},
-  description:{en:'Community submitted recipe',si:'සාමාජිකයෙකු ඉදිරිපත් කළ වට්ටෝරුව'},
-  ingredients:{en:ingredients,si:ingredients},
-  steps:{en:steps,si:steps}
- };
-
- pending.push(newRecipe);
- persist();
-
- this.reset();
- toast('Submitted for confirmation!');
- switchTab('saved');
-});
-
-// ====================================
-// PENDING CONFIRMATION
-// ====================================
-
-function renderPending(){
- document.getElementById('pendingCount').textContent=pending.length;
-
- document.getElementById('pendingList').innerHTML=pending.map(r=>`
- <div class="bg-white p-4 rounded-2xl border shadow-sm">
-  <div class="flex items-center gap-3">
-   <span class="text-3xl">${r.emoji}</span>
-   <div class="flex-1">
-    <h4 class="font-bold text-sm">${recipeName(r)}</h4>
-    <p class="text-xs text-stone-500">${r.category}</p>
-   </div>
-  </div>
-  <div class="flex gap-2 mt-3">
-   <button onclick="confirmRecipe('${r.id}')" class="flex-1 bg-leafGreen text-white text-xs font-bold py-2 rounded-full">✓ Confirm</button>
-   <button onclick="deletePending('${r.id}')" class="flex-1 bg-red-50 text-red-600 text-xs font-bold py-2 rounded-full">Delete</button>
-  </div>
- </div>
- `).join('');
-}
-
-function confirmRecipe(id){
- const recipe=pending.find(r=>r.id===id);
- if(!recipe)return;
-
- recipes.push(recipe);
- pending=pending.filter(r=>r.id!==id);
-
- persist();
- renderPending();
- renderRecipes();
- toast('Recipe confirmed!');
-}
-
-function deletePending(id){
- pending=pending.filter(r=>r.id!==id);
- persist();
- renderPending();
- toast('Pending recipe deleted');
-}
-
-// ====================================
-// START APP
-// ====================================
-
-renderCategories();
-renderRecipes();
-renderSaved();
-
-</script>
+
+    <script>
+        const OWNER_PIN = '1234';
+        let isOwnerUnlocked = false;
+
+        const DEFAULT_RECIPES = [
+            {
+                id: 'batu-moju',
+                category: 'Curries',
+                emoji: '🍆',
+                gradient: 'from-purple-700 to-terracotta',
+                prepTime: 15,
+                cookTime: 20,
+                servings: 4,
+                difficulty: { en: 'Easy', si: 'පහසුයි' },
+                title: { en: 'Batu Moju (Brinjal Moju)', si: 'බටු මෝජු' },
+                subtitle: { en: 'Sweet, Tangy & Spicy Brinjal Relish', si: 'පැණි, ඇඹුල් සහ සැර රසැති වම්බටු මෝජු' },
+                description: {
+                    en: 'A classic Sri Lankan sweet-and-sour fried brinjal relish cooked with vinegar, sugar, mustard seeds, and red onions.',
+                    si: 'බැදගත් වම්බටු, රතු ළූණු, අබ, විනාකිරි සහ සීනි යොදා සාදාගන්නා ඉතා රසවත් සාම්ප්‍රදායික ශ්‍රී ලාංකික මෝජු වර්ගයකි.'
+                },
+                ingredients: {
+                    en: [
+                        '300g Sri Lankan brinjals (Wambatu), cut into strips',
+                        '10–12 red onions (shallots), thinly sliced',
+                        '4–5 green chilies, slit lengthwise',
+                        '3–4 tbsp white vinegar',
+                        '1 ½ tsp sugar',
+                        '½ tsp turmeric powder',
+                        '1 tsp chili powder',
+                        '½ tsp mustard seeds',
+                        'Coconut oil for frying & salt to taste'
+                    ],
+                    si: [
+                        'කපාගත් වම්බටු ග්‍රෑම් 300ක්',
+                        'සිහින්ව ලියාගත් රතු ළූණු ගෙඩි 10-12ක්',
+                        'දික් අතට පලාගත් අමු මිරිස් කරල් 4-5ක්',
+                        'විනාකිරි මේස හැඳි 3-4ක්',
+                        'සීනි තේ හැඳි 1 ½ක්',
+                        'කහ කුඩු තේ හැඳි ½ක්',
+                        'මිරිස් කුඩු තේ හැඳි 1ක්',
+                        'අබ ඇට තේ හැඳි ½ක්',
+                        'බැදීමට පොල් තෙල් සහ රස අනුව ලුණු'
+                    ]
+                },
+                steps: {
+                    en: [
+                        'Rub the brinjal strips with salt and a little turmeric, then fry in hot coconut oil until golden brown. Drain excess oil.',
+                        'Leave about 2 tbsp oil in a pan and splutter the mustard seeds.',
+                        'Add sliced red onions and green chilies, sautéing gently until soft.',
+                        'Mix in chili powder, remaining turmeric, vinegar, sugar, and salt. Simmer for 2–3 minutes.',
+                        'Gently fold in the fried brinjal strips without breaking them, mix well, and remove from heat.'
+                    ],
+                    si: [
+                        'කපාගත් වම්බටු වලට ලුණු සහ කහ ස්වල්පයක් තවරා, රත් වූ පොල් තෙලේ රන්වන් පැහැ වන තුරු බැද තෙල් බේරෙන්නට තබන්න.',
+                        'එම තෙලෙන්ම මේස හැඳි 2ක් පමණ තාච්චියක ඉතිරි කර අබ ඇට දමා පුපුරවා ගන්න.',
+                        'එයට ලියාගත් රතු ළූණු සහ අමු මිරිස් එක් කර මෘදු වන තුරු මඳ ගින්නේ බැදගන්න.',
+                        'මිරිස් කුඩු, ඉතිරි කහ, විනාකිරි, සීනි සහ රස අනුව ලුණු එක් කර විනාඩි 2-3ක් හොඳින් කලවම් කරන්න.',
+                        'අවසානයේ බැදගත් වම්බටු එක් කර කැබලි නොකැඩෙන සේ සෙමින් කලවම් කර ලිපෙන් බාගන්න.'
+                    ]
+                }
+            },
+            {
+                id: 'kiribath',
+                category: 'Breakfast',
+                emoji: '🍚',
+                gradient: 'from-amber-500 to-terracotta',
+                prepTime: 10,
+                cookTime: 25,
+                servings: 6,
+                difficulty: { en: 'Easy', si: 'පහසුයි' },
+                title: { en: 'Kiribath (Milk Rice)', si: 'කිරිබත්' },
+                subtitle: { en: 'Traditional Auspicious Rice Dish', si: 'සාම්ප්‍රදායික මංගල කිරිබත්' },
+                description: {
+                    en: 'A sacred and celebratory Sri Lankan dish made by cooking white or red rice with rich coconut milk. Traditionally served cut into diamond shapes alongside Lunu Miris.',
+                    si: 'ශ්‍රී ලාංකිකයන්ගේ සෑම සුබ කටයුත්තකදීම පිළියෙළ කරන ප්‍රධානතම ආහාරයකි. උකු පොල් කිරි යොදා පිසගන්නා කිරිබත් ලුණු මිරිස් සමඟ ඉතා රසවත්ය.'
+                },
+                ingredients: {
+                    en: [
+                        '2 cups white raw rice (Kekulu Hal)',
+                        '3 cups water',
+                        '1 ½ cups thick coconut milk',
+                        '1 tsp salt (or to taste)',
+                        '1 piece of Pandan leaf (Rampe)'
+                    ],
+                    si: [
+                        'සුදු කැකුළු හාල් කෝප්ප 2ක්',
+                        'වතුර කෝප්ප 3ක්',
+                        'උකු පොල් කිරි කෝප්ප 1 ½ක්',
+                        'ලුණු තේ හැඳි 1ක් (රස අනුව)',
+                        'රම්පේ කැබැල්ලක්'
+                    ]
+                },
+                steps: {
+                    en: [
+                        'Wash the raw rice thoroughly until the water runs clear.',
+                        'Place rice, water, and pandan leaf in a heavy-bottomed pot. Cover and cook on medium heat until the water is absorbed and rice is soft.',
+                        'Mix salt into the thick coconut milk and pour it over the cooked rice.',
+                        'Stir gently with a wooden spoon on low heat for 5–7 minutes until the milk is absorbed and the mixture becomes creamy.',
+                        'Transfer onto a flat plate, flatten the top with a banana leaf or wet spatula, cool slightly, and cut into diamond shapes.'
+                    ],
+                    si: [
+                        'කැකුළු හාල් හොඳින් සෝදා පිරිසිදු කරගන්න.',
+                        'සෝදාගත් හාල්, වතුර සහ රම්පේ කැබැල්ල භාජනයකට දමා මඳ ගින්නේ බත හොඳින් ඉදෙන තුරු පිසගන්න.',
+                        'උකු පොල් කිරි වලට ලුණු දමා හොඳින් දියකර පිසගත් බතට එක් කරන්න.',
+                        'අඩු ගින්නේ විනාඩි 5-7ක් පමණ හැඳි ගාමින් කිරි හොඳින් බතට උරාගන්නා තුරු පිසගන්න.',
+                        'පැතලි පිඟානකට දමා කෙසෙල් කොළයකින් හොඳින් තුනී කර, නිවුණු පසු කැබලි වලට කපා පිළිගන්වන්න.'
+                    ]
+                }
+            },
+            {
+                id: 'polos-ambula',
+                category: 'Curries',
+                emoji: '🍛',
+                gradient: 'from-leafGreen to-emerald-700',
+                prepTime: 25,
+                cookTime: 60,
+                servings: 5,
+                difficulty: { en: 'Medium', si: 'මධ්‍යම' },
+                title: { en: 'Polos Ambula', si: 'පොළොස් ඇඹුල' },
+                subtitle: { en: 'Slow-Cooked Young Jackfruit Curry', si: 'සාම්ප්‍රදායික පොළොස් ව්‍යංජනය' },
+                description: {
+                    en: 'A deeply flavorful, tender young jackfruit curry slow-cooked in clay pots with roasted Sri Lankan spices, goraka, and coconut milk until dark and rich.',
+                    si: 'බැදපු තුනපහ, ගොරකා සහ පොල් කිරි යොදා මැටි ඇතිලියක මඳ ගින්නේ සෙමින් පිසගන්නා ඉතා රසවත් සාම්ප්‍රදායික ව්‍යංජනයකි.'
+                },
+                ingredients: {
+                    en: [
+                        '500g young jackfruit (Polos), cut into chunks',
+                        '2 tbsp roasted curry powder',
+                        '1 tsp roasted chili powder',
+                        '3 pieces of Goraka (soaked & ground)',
+                        '1 cup thick coconut milk & 2 cups thin coconut milk',
+                        '1 sliced onion, 3 garlic cloves, 1-inch ginger',
+                        'Curry leaves, Pandan leaf, 1 cinnamon stick',
+                        'Salt to taste'
+                    ],
+                    si: [
+                        'කැබලි කපාගත් ළපටි පොළොස් ග්‍රෑම් 500ක්',
+                        'බැදපු තුනපහ කුඩු මේස හැඳි 2ක්',
+                        'බැදපු මිරිස් කුඩු තේ හැඳි 1ක්',
+                        'අඹරාගත් ගොරකා බිකි 3ක්',
+                        'උකු පොල් කිරි කෝප්ප 1ක් සහ දිය කිරි කෝප්ප 2ක්',
+                        'ලියාගත් ළූණු ගෙඩියක්, සුදුළූණු බිකි 3ක්, ඉඟුරු කැබැල්ලක්',
+                        'කරපිංචා, රම්පේ, කුරුඳු පොත්තක් සහ රස අනුව ලුණු'
+                    ]
+                },
+                steps: {
+                    en: [
+                        'Mix the polos chunks with roasted curry powder, chili powder, ground goraka, ginger, garlic, and salt. Let marinate for 15 minutes.',
+                        'Place the marinated polos in a clay pot (Mati Athiliya) along with onions, curry leaves, pandan, cinnamon, and thin coconut milk.',
+                        'Cover and simmer on low-medium heat for 40–45 minutes until the jackfruit pieces become very tender.',
+                        'Pour in the thick coconut milk, gently stir, and simmer uncovered for another 10–15 minutes until the gravy thickens and turns dark brown.'
+                    ],
+                    si: [
+                        'කපාගත් පොළොස් කැබලි වලට බැදපු තුනපහ, මිරිස් කුඩු, අඹරාගත් ගොරකා, ඉඟුරු, සුදුළූණු සහ ලුණු දමා විනාඩි 15ක් පදම් වෙන්න හරින්න.',
+                        'පදම් වූ පොළොස් මැටි ඇතිලියකට දමා එයට ළූණු, කරපිංචා, රම්පේ, කුරුඳු සහ දිය කිරි එකතු කරන්න.',
+                        'පියනකින් වසා මඳ ගින්නේ විනාඩි 40-45ක් පමණ පොළොස් කැබලි හොඳින් තැම්බෙන තුරු පිසගන්න.',
+                        'අවසානයේ උකු පොල් කිරි එක් කර තවත් විනාඩි 10-15ක් හොද්ද හිඳී තද දුඹුරු පැහැ වන තුරු පිසගන්න.'
+                    ]
+                }
+            },
+            {
+                id: 'konda-kavum',
+                category: 'Sweets',
+                emoji: '🍩',
+                gradient: 'from-amber-700 to-orange-900',
+                prepTime: 30,
+                cookTime: 30,
+                servings: 15,
+                difficulty: { en: 'Hard', si: 'අපහසුයි' },
+                title: { en: 'Konda Kavum', si: 'කොණ්ඩ කැවුම්' },
+                subtitle: { en: 'Traditional Sri Lankan Oil Cake', si: 'සිංහල අවුරුදු රසකැවිලි' },
+                description: {
+                    en: 'The king of Sri Lankan New Year sweets. Made from rice flour and rich kithul treacle, fried to perfection with its signature top knot (Konda).',
+                    si: 'සිංහල හා හින්දු අලුත් අවුරුදු මේසයේ නැතිවම බැරි ප්‍රධානතම රසකැවිල්ලකි. හාල් පිටි සහ කිතුල් පැණි මිශ්‍ර කර ගැඹුරු තෙලේ බැද සාදාගනී.'
+                },
+                ingredients: {
+                    en: [
+                        '2 cups roasted white rice flour',
+                        '2 tbsp all-purpose wheat flour',
+                        '1 cup pure Kithul treacle (Pani)',
+                        '¼ cup warm water',
+                        '½ tsp cardamom powder & a pinch of salt',
+                        'Coconut oil for deep frying'
+                    ],
+                    si: [
+                        'කබලේ බැද හලාගත් සුදු හාල් පිටි කෝප්ප 2ක්',
+                        'පාන් පිටි මේස හැඳි 2ක්',
+                        'පිරිසිදු කිතුල් පැණි කෝප්ප 1ක්',
+                        'මඳ රස්නේ වතුර කෝප්ප ¼ක්',
+                        'කුඩු කරගත් එනසාල් තේ හැඳි ½ක් සහ ලුණු ස්වල්පයක්',
+                        'බැදීමට පොල් තෙල්'
+                    ]
+                },
+                steps: {
+                    en: [
+                        'Warm the Kithul treacle gently in a pan (do not boil) and let it cool slightly.',
+                        'In a bowl, mix rice flour, wheat flour, cardamom, and salt. Gradually pour in the treacle and warm water to form a thick, smooth pouring batter.',
+                        'Cover and rest the batter for at least 1–2 hours.',
+                        'Heat coconut oil in a small deep wok (Thachchiya). Pour a small ladle of batter into the center.',
+                        'As the edges puff up, use a skewer (ekel) to swirl the center batter upward while splashing hot oil over it to form the "Konda" (top knot). Fry until golden brown.'
+                    ],
+                    si: [
+                        'කිතුල් පැණි ටික භාජනයකට දමා මඳක් රත් කර නිවෙන්නට හරින්න.',
+                        'හාල් පිටි, පාන් පිටි, එනසාල් සහ ලුණු මිශ්‍ර කර එයට පැණි සහ වතුර ටික ටික එක් කරමින් උකු මිශ්‍රණයක් සාදාගන්න.',
+                        'මෙම මිශ්‍රණය පැය 1-2ක් පමණ වසා පදම් වෙන්නට තබන්න.',
+                        'කුඩා තාච්චියක පොල් තෙල් රත් කර, පිටි මිශ්‍රණයෙන් හැන්දක් තෙල් මැදට වත් කරන්න.',
+                        'කැවුම පිම්බීගෙන එන විට ඉරටුවකින් මැදට කරකවමින් උඩට තෙල් ඉස "කොණ්ඩය" සාදා රන්වන් පැහැ වන තුරු බැදගන්න.'
+                    ]
+                }
+            },
+            {
+                id: 'kokis',
+                category: 'Sweets',
+                emoji: '🏵️',
+                gradient: 'from-yellow-500 to-amber-600',
+                prepTime: 15,
+                cookTime: 25,
+                servings: 20,
+                difficulty: { en: 'Medium', si: 'මධ්‍යම' },
+                title: { en: 'Kokis', si: 'කොකිස්' },
+                subtitle: { en: 'Crispy Rosette Cookies', si: 'කරකර ගා හැපෙන කොකිස්' },
+                description: {
+                    en: 'Crunchy, golden-yellow rosette-shaped treats made using a traditional brass kokis mold, thick coconut milk, rice flour, and a hint of turmeric.',
+                    si: 'කොකිස් අච්චුව ආධාරයෙන් පොල් කිරි, හාල් පිටි සහ කහ ස්වල්පයක් යොදා ගැඹුරු තෙලේ බැද සාදාගන්නා ඉතා රසවත් අවුරුදු කෑමකි.'
+                },
+                ingredients: {
+                    en: [
+                        '2 cups white rice flour',
+                        '1 ½ cups thick coconut milk',
+                        '1 egg (beaten)',
+                        '½ tsp turmeric powder',
+                        '½ tsp salt',
+                        'Coconut oil for deep frying'
+                    ],
+                    si: [
+                        'සුදු හාල් පිටි කෝප්ප 2ක්',
+                        'උකු පොල් කිරි කෝප්ප 1 ½ක්',
+                        'ගසාගත් බිත්තර 1ක්',
+                        'කහ කුඩු තේ හැඳි ½ක්',
+                        'ලුණු තේ හැඳි ½ක්',
+                        'බැදීමට පොල් තෙල්'
+                    ]
+                },
+                steps: {
+                    en: [
+                        'Whisk together rice flour, turmeric powder, salt, beaten egg, and coconut milk until you get a smooth, lump-free batter.',
+                        'Heat coconut oil in a deep pan and place the brass Kokis mold inside the oil to heat up for 2 minutes.',
+                        'Dip the hot mold three-quarters into the batter (do not cover the top edge of the mold).',
+                        'Immediately immerse the batter-coated mold into the hot oil. Gently shake until the Kokis detaches from the mold and fry until crisp and golden.'
+                    ],
+                    si: [
+                        'හාල් පිටි, කහ කුඩු, ලුණු, බිත්තරය සහ පොල් කිරි එකට දමා කැට නොසිටින සේ උකු දියරයක් සාදාගන්න.',
+                        'තාච්චියක පොල් තෙල් රත් කර කොකිස් අච්චුව විනාඩි 2ක් පමණ රත් වූ තෙලේ ගිල්වා තබන්න.',
+                        'රත් වූ අච්චුව පිටි මිශ්‍රණයේ 3/4ක් පමණ ගිල්වා ගන්න (අච්චුවේ උඩ දාරය වැසෙන සේ ගිල්වන්න එපා).',
+                        'වහාම එය රත් වූ තෙලට දමා සෙමින් සොලවන්න. කොකිස් එක අච්චුවෙන් ගැලවුණු පසු රන්වන් පැහැ වන තුරු බැදගන්න.'
+                    ]
+                }
+            },
+            {
+                id: 'watalappan',
+                category: 'Sweets',
+                emoji: '🍮',
+                gradient: 'from-stone-700 to-amber-900',
+                prepTime: 15,
+                cookTime: 40,
+                servings: 6,
+                difficulty: { en: 'Easy', si: 'පහසුයි' },
+                title: { en: 'Watalappan', si: 'වටලප්පන්' },
+                subtitle: { en: 'Spiced Coconut Jaggery Custard', si: 'කිතුල් හකුරු සහ පොල් කිරි අතුරුපස' },
+                description: {
+                    en: 'A rich, velvety Sri Lankan steamed custard pudding sweetened with dark Kithul jaggery and infused with cardamom, nutmeg, and roasted cashews.',
+                    si: 'කිතුල් හකුරු, උකු පොල් කිරි, බිත්තර සහ එනසාල් යොදා වාෂ්පයෙන් තම්බා සාදාගන්නා ඉතා රසවත් සාම්ප්‍රදායික අතුරුපසකි.'
+                },
+                ingredients: {
+                    en: [
+                        '250g Kithul jaggery (finely grated)',
+                        '1 cup thick coconut milk',
+                        '5 large eggs',
+                        '½ tsp crushed cardamom pods',
+                        '¼ tsp grated nutmeg & pinch of salt',
+                        '2 tbsp roasted cashew nuts for garnish'
+                    ],
+                    si: [
+                        'සිහින්ව ගාගත් කිතුල් හකුරු ග්‍රෑම් 250ක්',
+                        'උකු පොල් කිරි කෝප්ප 1ක්',
+                        'බිත්තර 5ක්',
+                        'කුඩු කරගත් එනසාල් තේ හැඳි ½ක්',
+                        'සාදික්කා කුඩු තේ හැඳි ¼ක් සහ ලුණු ස්වල්පයක්',
+                        'සැරසීමට බැදගත් කජු මේස හැඳි 2ක්'
+                    ]
+                },
+                steps: {
+                    en: [
+                        'Dissolve the grated Kithul jaggery in the thick coconut milk completely and strain to remove any impurities.',
+                        'In a separate bowl, lightly beat the eggs (do not make them frothy).',
+                        'Gently fold the jaggery-coconut milk mixture, cardamom, nutmeg, and salt into the eggs.',
+                        'Pour into a greased heatproof bowl, cover tightly with foil, and steam for 35–40 minutes until set. Chill and top with cashews.'
+                    ],
+                    si: [
+                        'ගාගත් කිතුල් හකුරු උකු පොල් කිරි සමඟ හොඳින් දියකර පෙරා ගන්න.',
+                        'වෙනත් භාජනයක බිත්තර ටික දමා පෙණ නොනඟින සේ සෙමින් ගසාගන්න.',
+                        'එයට හකුරු මිශ්‍රණය, එනසාල්, සාදික්කා සහ ලුණු එක් කර හොඳින් කලවම් කරන්න.',
+                        'තෙල් තවරාගත් භාජනයකට දමා හොඳින් වසා විනාඩි 35-40ක් වාෂ්පයෙන් තම්බා, නිවුණු පසු කජු දමා පිළිගන්වන්න.'
+                    ]
+                }
+            },
+            {
+                id: 'gotukola-sambol',
+                category: 'Curries',
+                emoji: '🥗',
+                gradient: 'from-green-600 to-teal-800',
+                prepTime: 15,
+                cookTime: 0,
+                servings: 4,
+                difficulty: { en: 'Easy', si: 'පහසුයි' },
+                title: { en: 'Gotukola Sambol', si: 'ගොටුකොළ සම්බෝල' },
+                subtitle: { en: 'Fresh Pennywort & Coconut Salad', si: 'පෝෂ්‍යදායී ගොටුකොළ සම්බෝලය' },
+                description: {
+                    en: 'A vibrant, nutritious raw herbal salad made with finely shredded Gotukola (pennywort) leaves, freshly scraped coconut, shallots, green chilies, and tangy lime.',
+                    si: 'සිහින්ව ලියාගත් නැවුම් ගොටුකොළ, ගාගත් පොල්, රතු ළූණු, අමු මිරිස් සහ දෙහි ඇඹුල් යොදා සාදාගන්නා ඉතා ගුණදායක සම්බෝලයකි.'
+                },
+                ingredients: {
+                    en: [
+                        '2 bunches fresh Gotukola leaves (washed & finely sliced)',
+                        '1 cup freshly scraped coconut',
+                        '5 red onions (shallots), thinly sliced',
+                        '2 green chilies, finely chopped',
+                        '1 medium tomato, diced (optional)',
+                        'Juice of 1 lime & salt to taste'
+                    ],
+                    si: [
+                        'සෝදා සිහින්ව ලියාගත් ගොටුකොළ මිටි 2ක්',
+                        'අලුත් ගාගත් පොල් කෝප්ප 1ක්',
+                        'සිහින්ව ලියාගත් රතු ළූණු ගෙඩි 5ක්',
+                        'සිහින්ව කපාගත් අමු මිරිස් කරල් 2ක්',
+                        'කුඩාවට කපාගත් තක්කාලි ගෙඩියක් (කැමති නම්)',
+                        'දෙහි ගෙඩියක යුෂ සහ රස අනුව ලුණු'
+                    ]
+                },
+                steps: {
+                    en: [
+                        'Wash the Gotukola leaves thoroughly in salted water, drain completely, and slice them very finely.',
+                        'In a mixing bowl, combine the sliced shallots, green chilies, tomatoes, scraped coconut, and salt. Mix lightly with your fingertips.',
+                        'Just before serving, add the finely sliced Gotukola leaves and fresh lime juice. Toss gently so the leaves stay crisp and green.'
+                    ],
+                    si: [
+                        'ගොටුකොළ ලුණු වතුරෙන් හොඳින් සෝදා වතුර බේරෙන්නට හැර ඉතා සිහින්ව ලියාගන්න.',
+                        'භාජනයකට ලියාගත් රතු ළූණු, අමු මිරිස්, තක්කාලි, ගාගත් පොල් සහ ලුණු දමා ඇඟිලි තුඩු වලින් සෙමින් අනාගන්න.',
+                        'ආහාරයට ගැනීමට ඔන්න මෙන්න තිබියදී ලියාගත් ගොටුකොළ සහ දෙහි ඇඹුල් එක් කර කොළ පැහැය නොනැසෙන සේ කලවම් කර පිළිගන්වන්න.'
+                    ]
+                }
+            }
+        ];
+
+        const UI_TEXT = {
+            en: {
+                subtitle: 'Authentic Sri Lankan Cuisine',
+                searchPlaceholder: 'Search recipes or ingredients...',
+                categories: { All: 'All', Breakfast: 'Breakfast', Curries: 'Curries', Sweets: 'Sweets' },
+                sectionTitle: 'Traditional Recipes',
+                dishesCount: (n) => `${n} ${n === 1 ? 'dish' : 'dishes'}`,
+                emptySearchTitle: 'No recipes found',
+                emptySearchDesc: 'Try searching for another dish or ingredient like "Coconut" or "Polos".',
+                savedBannerTitle: 'Saved Recipes',
+                savedBannerSub: 'Your favorite traditional dishes',
+                emptySavedTitle: 'No saved recipes yet',
+                emptySavedDesc: 'Tap the heart icon on any recipe card to save it here for quick access while cooking.',
+                exploreBtn: 'Explore Recipes',
+                addFormTitle: 'Share a Traditional Recipe',
+                addFormSub: "Add your family's secret recipe to Hela Rasa",
+                lblName: 'Dish Name (English / Sinhala) *',
+                lblCategory: 'Category *',
+                lblEmoji: 'Dish Icon',
+                lblPrep: 'Prep (mins) *',
+                lblCook: 'Cook (mins) *',
+                lblServings: 'Servings *',
+                lblIngredients: 'Ingredients (One per line) *',
+                lblSteps: 'Cooking Steps (One per line) *',
+                btnSubmit: 'Submit for Confirmation',
+                statPrep: 'Prep Time',
+                statCook: 'Cook Time',
+                statServ: 'Servings',
+                mins: 'mins',
+                people: 'People',
+                ingTitle: 'Ingredients',
+                ingHint: 'Tap to check off',
+                stepsTitle: 'Cooking Instructions',
+                navHome: 'Home',
+                navSaved: 'Saved',
+                navAdd: 'Add Recipe',
+                toastSaved: 'Added to Saved Recipes!',
+                toastRemoved: 'Removed from Saved',
+                toastPending: 'Submitted for Confirmation! (Not added to Main List)',
+                toastConfirmed: 'Recipe confirmed & added to Main List!',
+                toastRejected: 'Pending recipe rejected & removed',
+                toastOwnerOn: 'Owner Mode Unlocked!',
+                toastOwnerOff: 'Owner Mode Locked',
+                toastWrongPin: 'Incorrect PIN!'
+            },
+            si: {
+                subtitle: 'සාම්ප්‍රදායික ශ්‍රී ලාංකික ආහාර වට්ටෝරු',
+                searchPlaceholder: 'කෑම වර්ග හෝ අමුද්‍රව්‍ය සොයන්න...',
+                categories: { All: 'සියල්ල', Breakfast: 'උදෑසන ආහාර', Curries: 'ව්‍යංජන', Sweets: 'රසකැවිලි' },
+                sectionTitle: 'සාම්ප්‍රදායික වට්ටෝරු',
+                dishesCount: (n) => `වට්ටෝරු ${n}ක්`,
+                emptySearchTitle: 'වට්ටෝරු හමු නොවීය',
+                emptySearchDesc: '"පොල්", "කිරිබත්" හෝ "පොළොස්" ලෙස නැවත සොයා බලන්න.',
+                savedBannerTitle: 'සුරැකි වට්ටෝරු',
+                savedBannerSub: 'ඔබ කැමතිම සාම්ප්‍රදායික ආහාර',
+                emptySavedTitle: 'තවමත් කිසිවක් සුරැක නැත',
+                emptySavedDesc: 'ඔබ කැමති වට්ටෝරු පසුව පහසුවෙන් බලාගැනීමට හදවත (❤️) ලකුණ ඔබන්න.',
+                exploreBtn: 'වට්ටෝරු බලන්න',
+                addFormTitle: 'නව වට්ටෝරුවක් එක් කරන්න',
+                addFormSub: 'ඔබේ පවුලේ සාම්ප්‍රදායික රස රහස් අප සමඟ බෙදාගන්න',
+                lblName: 'ආහාරයේ නම (සිංහල / English) *',
+                lblCategory: 'වර්ගය *',
+                lblEmoji: 'අයිකනය',
+                lblPrep: 'සූදානම් කිරීම (විනාඩි) *',
+                lblCook: 'පිසීම (විනාඩි) *',
+                lblServings: 'ප්‍රමාණය (දෙනෙකුට) *',
+                lblIngredients: 'අවශ්‍ය ද්‍රව්‍ය (පේළියකට එක බැගින්) *',
+                lblSteps: 'සාදන ආකාරය (පියවරෙන් පියවර) *',
+                btnSubmit: 'තහවුරු කිරීමට යොමු කරන්න',
+                statPrep: 'සූදානම් කිරීම',
+                statCook: 'පිසීමේ කාලය',
+                statServ: 'ප්‍රමාණය',
+                mins: 'විනාඩි',
+                people: 'දෙනෙකුට',
+                ingTitle: 'අවශ්‍ය ද්‍රව්‍ය',
+                ingHint: 'ලකුණු කිරීමට ඔබන්න',
+                stepsTitle: 'සාදන ආකාරය',
+                navHome: 'මුල් පිටුව',
+                navSaved: 'සුරැකි',
+                navAdd: 'එක් කරන්න',
+                toastSaved: 'සුරැකි වට්ටෝරු වලට එක් කළා!',
+                toastRemoved: 'සුරැකි ලැයිස්තුවෙන් ඉවත් කළා',
+                toastPending: 'තහවුරු කිරීමට යොමු කළා! (Main List එකට වැටෙන්නේ නැත)',
+                toastConfirmed: 'වට්ටෝරුව තහවුරු කර Main List එකට එක් කළා!',
+                toastRejected: 'වට්ටෝරුව ප්‍රතික්ෂේප කර ඉවත් කළා',
+                toastOwnerOn: 'Owner Mode විවෘත විය!',
+                toastOwnerOff: 'Owner Mode Lock කළා',
+                toastWrongPin: 'PIN අංකය වැරදියි!'
+            }
+        };
+
+        let currentLang = 'en';
+        let selectedCategory = 'All';
+        let searchQuery = '';
+        let activeTab = 'home';
+        let currentModalRecipeId = null;
+
+        let customRecipes = [];
+        let favoriteIds = [];
+        let pendingRecipes = [];
+
+        try {
+            const storedCustom = localStorage.getItem('hela_rasa_custom_recipes');
+            if (storedCustom) customRecipes = JSON.parse(storedCustom);
+
+            const storedFavs = localStorage.getItem('hela_rasa_favorites');
+            if (storedFavs) favoriteIds = JSON.parse(storedFavs);
+
+            const storedPending = localStorage.getItem('hela_rasa_pending_recipes');
+            if (storedPending) pendingRecipes = JSON.parse(storedPending);
+        } catch (e) {
+            console.error('Storage access error:', e);
+        }
+
+        function savePendingRecipes() {
+            try {
+                localStorage.setItem('hela_rasa_pending_recipes', JSON.stringify(pendingRecipes));
+            } catch (e) {}
+        }
+
+        function getAllRecipes() {
+            return [...customRecipes, ...DEFAULT_RECIPES];
+        }
+
+        function updateOwnerUI() {
+            const section = document.getElementById('pending-section');
+            const btn = document.getElementById('owner-toggle-btn');
+            const statusLabel = document.getElementById('owner-status-label');
+
+            if (isOwnerUnlocked) {
+                section.classList.remove('hidden');
+                statusLabel.textContent = currentLang === 'si' ? 'Owner Mode: විවෘතයි' : 'Owner Mode: Unlocked';
+                btn.innerHTML = `<i class="fa-solid fa-lock-open mr-1 text-leafGreen"></i><span>${currentLang === 'si' ? 'Lock' : 'Lock'}</span>`;
+                renderPendingRecipes();
+            } else {
+                section.classList.add('hidden');
+                statusLabel.textContent = currentLang === 'si' ? 'Owner Access' : 'Owner Access';
+                btn.innerHTML = `<i class="fa-solid fa-lock mr-1 text-terracotta"></i><span>Owner Mode</span>`;
+            }
+            updateSavedDot();
+        }
+
+        function handleOwnerToggle() {
+            const t = UI_TEXT[currentLang];
+            if (isOwnerUnlocked) {
+                isOwnerUnlocked = false;
+                updateOwnerUI();
+                showToast(t.toastOwnerOff);
+                return;
+            }
+
+            const enteredPin = prompt(currentLang === 'si' ? 'Owner PIN අංකය ඇතුළත් කරන්න:' : 'Enter Owner PIN:');
+            if (enteredPin === null) return;
+
+            if (enteredPin.trim() === OWNER_PIN) {
+                isOwnerUnlocked = true;
+                updateOwnerUI();
+                showToast(t.toastOwnerOn);
+            } else {
+                showToast(t.toastWrongPin);
+            }
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'si' : 'en';
+            updateLanguageUI();
+            renderCategories();
+            renderRecipes();
+            renderSavedRecipes();
+            updateOwnerUI();
+            if (currentModalRecipeId) {
+                openRecipeModal(currentModalRecipeId);
+            }
+        }
+
+        function updateLanguageUI() {
+            const t = UI_TEXT[currentLang];
+
+            const enBadge = document.getElementById('lang-en-badge');
+            const siBadge = document.getElementById('lang-si-badge');
+            if (currentLang === 'en') {
+                enBadge.className = 'px-2.5 py-1 rounded-full text-xs font-bold transition-all bg-terracotta text-white shadow-sm';
+                siBadge.className = 'px-2.5 py-1 rounded-full text-xs font-bold transition-all text-stone-600';
+            } else {
+                siBadge.className = 'px-2.5 py-1 rounded-full text-xs font-bold transition-all bg-terracotta text-white shadow-sm';
+                enBadge.className = 'px-2.5 py-1 rounded-full text-xs font-bold transition-all text-stone-600';
+            }
+
+            document.getElementById('header-subtitle').textContent = t.subtitle;
+            document.getElementById('search-input').placeholder = t.searchPlaceholder;
+            document.getElementById('recipes-section-title').textContent = t.sectionTitle;
+            document.getElementById('empty-search-title').textContent = t.emptySearchTitle;
+            document.getElementById('empty-search-desc').textContent = t.emptySearchDesc;
+            document.getElementById('saved-banner-title').textContent = t.savedBannerTitle;
+            document.getElementById('saved-banner-sub').textContent = t.savedBannerSub;
+            document.getElementById('empty-saved-title').textContent = t.emptySavedTitle;
+            document.getElementById('empty-saved-desc').textContent = t.emptySavedDesc;
+            document.getElementById('explore-btn').textContent = t.exploreBtn;
+
+            document.getElementById('add-form-title').textContent = t.addFormTitle;
+            document.getElementById('add-form-sub').textContent = t.addFormSub;
+            document.getElementById('lbl-name').textContent = t.lblName;
+            document.getElementById('lbl-category').textContent = t.lblCategory;
+            document.getElementById('lbl-emoji').textContent = t.lblEmoji;
+            document.getElementById('lbl-prep').textContent = t.lblPrep;
+            document.getElementById('lbl-cook').textContent = t.lblCook;
+            document.getElementById('lbl-servings').textContent = t.lblServings;
+            document.getElementById('lbl-ingredients').textContent = t.lblIngredients;
+            document.getElementById('lbl-steps').textContent = t.lblSteps;
+            document.getElementById('btn-submit-recipe').querySelector('span').textContent = t.btnSubmit;
+
+            document.getElementById('nav-lbl-home').textContent = t.navHome;
+            document.getElementById('nav-lbl-saved').textContent = t.navSaved;
+            document.getElementById('nav-lbl-add').textContent = t.navAdd;
+        }
+
+        function renderCategories() {
+            const cats = ['All', 'Breakfast', 'Curries', 'Sweets'];
+            const icons = { All: '🍽️', Breakfast: '🌅', Curries: '🍛', Sweets: '🍯' };
+            const t = UI_TEXT[currentLang].categories;
+
+            const container = document.getElementById('category-list');
+            container.innerHTML = cats.map(cat => {
+                const isActive = selectedCategory === cat;
+                const activeClasses = isActive
+                    ? 'bg-terracotta text-white shadow-md border-terracotta'
+                    : 'bg-white text-richBrown border-stone-200 hover:bg-softSand';
+                return `
+                    <button onclick="selectCategory('${cat}')" class="shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold border transition active:scale-95 ${activeClasses}">
+                        <span>${icons[cat]}</span>
+                        <span>${t[cat]}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function selectCategory(cat) {
+            selectedCategory = cat;
+            renderCategories();
+            renderRecipes();
+        }
+
+        function handleSearch() {
+            const input = document.getElementById('search-input');
+            searchQuery = input.value.trim().toLowerCase();
+            const clearBtn = document.getElementById('clear-search-btn');
+            if (searchQuery.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+            renderRecipes();
+        }
+
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            searchQuery = '';
+            document.getElementById('clear-search-btn').classList.add('hidden');
+            renderRecipes();
+        }
+
+        function createRecipeCardHTML(recipe) {
+            const isFav = favoriteIds.includes(recipe.id);
+            const t = UI_TEXT[currentLang];
+            const title = recipe.title[currentLang] || recipe.title.en;
+            const altTitle = currentLang === 'en' ? recipe.title.si : recipe.title.en;
+            const catLabel = t.categories[recipe.category] || recipe.category;
+            const diffLabel = recipe.difficulty[currentLang] || recipe.difficulty.en;
+            const totalTime = Number(recipe.prepTime) + Number(recipe.cookTime);
+
+            return `
+                <div onclick="openRecipeModal('${recipe.id}')" class="bg-white rounded-3xl p-3.5 shadow-sm border border-stone-200/70 hover:shadow-md transition cursor-pointer flex gap-3.5 items-center relative group active:scale-[0.99]">
+                    <div class="w-24 h-24 rounded-2xl bg-gradient-to-br ${recipe.gradient} flex flex-col items-center justify-center text-white shrink-0 shadow-inner relative overflow-hidden">
+                        <span class="text-4xl drop-shadow-sm group-hover:scale-110 transition-transform duration-300">${recipe.emoji}</span>
+                        <span class="text-[10px] font-bold bg-black/25 px-2 py-0.5 rounded-full mt-1.5 backdrop-blur-xs">${catLabel}</span>
+                    </div>
+
+                    <div class="flex-1 min-w-0 pr-7">
+                        <h3 class="font-extrabold text-richBrown text-base leading-snug truncate">${title}</h3>
+                        <p class="text-xs text-stone-500 font-medium truncate mt-0.5">${altTitle}</p>
+
+                        <div class="flex flex-wrap items-center gap-2 mt-3">
+                            <span class="inline-flex items-center gap-1 text-[11px] font-semibold bg-softSand text-richBrown px-2.5 py-1 rounded-lg">
+                                <i class="fa-regular fa-clock text-terracotta"></i>
+                                ${totalTime} ${t.mins}
+                            </span>
+                            <span class="inline-flex items-center gap-1 text-[11px] font-semibold bg-emerald-50 text-leafGreen px-2.5 py-1 rounded-lg">
+                                <i class="fa-solid fa-fire-burner"></i>
+                                ${diffLabel}
+                            </span>
+                        </div>
+                    </div>
+
+                    <button
+                        onclick="toggleFavorite(event, '${recipe.id}')"
+                        class="absolute top-3.5 right-3.5 w-9 h-9 rounded-full bg-warmCream hover:bg-red-50 flex items-center justify-center transition active:scale-90 border border-stone-100"
+                        aria-label="Bookmark Recipe"
+                    >
+                        <i class="${isFav ? 'fa-solid fa-heart text-red-500' : 'fa-regular fa-heart text-stone-400'} text-base"></i>
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderRecipes() {
+            const all = getAllRecipes();
+            const filtered = all.filter(r => {
+                const matchesCat = selectedCategory === 'All' || r.category === selectedCategory;
+                if (!matchesCat) return false;
+                if (!searchQuery) return true;
+
+                const searchableText = [
+                    r.title.en,
+                    r.title.si,
+                    r.subtitle.en,
+                    r.subtitle.si,
+                    ...(r.ingredients.en || []),
+                    ...(r.ingredients.si || [])
+                ].join(' ').toLowerCase();
+
+                return searchableText.includes(searchQuery);
+            });
+
+            const grid = document.getElementById('recipe-grid');
+            const emptyState = document.getElementById('empty-search-state');
+            const countBadge = document.getElementById('recipe-count-badge');
+
+            countBadge.textContent = UI_TEXT[currentLang].dishesCount(filtered.length);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                grid.innerHTML = filtered.map(createRecipeCardHTML).join('');
+            }
+        }
+
+        function toggleFavorite(event, id) {
+            if (event) event.stopPropagation();
+            const idx = favoriteIds.indexOf(id);
+            const t = UI_TEXT[currentLang];
+
+            if (idx === -1) {
+                favoriteIds.push(id);
+                showToast(t.toastSaved);
+            } else {
+                favoriteIds.splice(idx, 1);
+                showToast(t.toastRemoved);
+            }
+
+            try {
+                localStorage.setItem('hela_rasa_favorites', JSON.stringify(favoriteIds));
+            } catch (e) {}
+
+            updateSavedDot();
+            renderRecipes();
+            renderSavedRecipes();
+            if (currentModalRecipeId === id) {
+                updateModalFavButton(id);
+            }
+        }
+
+        function toggleFavoriteFromModal() {
+            if (currentModalRecipeId) {
+                toggleFavorite(null, currentModalRecipeId);
+            }
+        }
+
+        function updateSavedDot() {
+            const dot = document.getElementById('saved-dot');
+            const showDot = favoriteIds.length > 0 || (isOwnerUnlocked && pendingRecipes.length > 0);
+            if (showDot) {
+                dot.classList.remove('hidden');
+            } else {
+                dot.classList.add('hidden');
+            }
+        }
+
+        function renderSavedRecipes() {
+            const all = getAllRecipes();
+            const savedList = all.filter(r => favoriteIds.includes(r.id));
+            const grid = document.getElementById('saved-grid');
+            const emptyState = document.getElementById('empty-saved-state');
+
+            if (savedList.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                grid.innerHTML = savedList.map(createRecipeCardHTML).join('');
+            }
+        }
+
+        function renderPendingRecipes() {
+            if (!isOwnerUnlocked) return;
+            const listEl = document.getElementById('pending-list');
+            const badgeEl = document.getElementById('pending-count-badge');
+            if (!listEl || !badgeEl) return;
+
+            badgeEl.textContent = pendingRecipes.length;
+            updateSavedDot();
+
+            if (pendingRecipes.length === 0) {
+                listEl.innerHTML = `
+                    <div class="bg-white p-4 rounded-2xl border border-stone-100 text-center text-xs text-stone-400">
+                        ${currentLang === 'si' ? 'තහවුරු කිරීමට නව වට්ටෝරු නැත' : 'No pending recipes to confirm'}
+                    </div>
+                `;
+                return;
+            }
+
+            listEl.innerHTML = pendingRecipes.map(r => {
+                const title = r.title[currentLang] || r.title.en;
+                const ingCount = (r.ingredients[currentLang] || r.ingredients.en || []).length;
+                const stepCount = (r.steps[currentLang] || r.steps.en || []).length;
+
+                return `
+                    <div class="bg-white p-4 rounded-3xl border border-amber-200 shadow-sm space-y-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br ${r.gradient} flex items-center justify-center text-2xl text-white shrink-0">
+                                ${r.emoji}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="font-extrabold text-sm text-richBrown truncate">${title}</h4>
+                                <p class="text-[11px] text-stone-500 mt-0.5">
+                                    ${ingCount} ${currentLang === 'si' ? 'ද්‍රව්‍ය' : 'ingredients'} • ${stepCount} ${currentLang === 'si' ? 'පියවර' : 'steps'}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 pt-1">
+                            <button onclick="confirmPendingRecipe('${r.id}')" class="bg-leafGreen hover:bg-leafGreenLight text-white text-xs font-bold py-2.5 px-3 rounded-xl transition active:scale-95">
+                                ${currentLang === 'si' ? 'Confirm (එක් කරන්න)' : 'Confirm'}
+                            </button>
+                            <button onclick="rejectPendingRecipe('${r.id}')" class="bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold py-2.5 px-3 rounded-xl border border-red-200 transition active:scale-95">
+                                ${currentLang === 'si' ? 'Reject (ඉවත් කරන්න)' : 'Reject'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function confirmPendingRecipe(pendingId) {
+            if (!isOwnerUnlocked) return;
+            const idx = pendingRecipes.findIndex(r => r.id === pendingId);
+            if (idx === -1) return;
+
+            const approved = {
+                ...pendingRecipes[idx],
+                id: 'confirmed-' + Date.now(),
+                difficulty: { en: 'Confirmed', si: 'තහවුරු කළ' },
+                status: 'confirmed'
+            };
+
+            pendingRecipes.splice(idx, 1);
+            savePendingRecipes();
+
+            customRecipes.unshift(approved);
+            try {
+                localStorage.setItem('hela_rasa_custom_recipes', JSON.stringify(customRecipes));
+            } catch (e) {}
+
+            selectedCategory = 'All';
+            renderCategories();
+            renderRecipes();
+            renderPendingRecipes();
+            switchTab('home');
+            showToast(UI_TEXT[currentLang].toastConfirmed);
+        }
+
+        function rejectPendingRecipe(pendingId) {
+            if (!isOwnerUnlocked) return;
+            pendingRecipes = pendingRecipes.filter(r => r.id !== pendingId);
+            savePendingRecipes();
+            renderPendingRecipes();
+            showToast(UI_TEXT[currentLang].toastRejected);
+        }
+
+        function openRecipeModal(id) {
+            const recipe = getAllRecipes().find(r => r.id === id);
+            if (!recipe) return;
+
+            currentModalRecipeId = id;
+            const t = UI_TEXT[currentLang];
+
+            const heroBg = document.getElementById('modal-hero-bg');
+            heroBg.className = `p-6 text-white relative overflow-hidden bg-gradient-to-br ${recipe.gradient}`;
+
+            document.getElementById('modal-emoji').textContent = recipe.emoji;
+            document.getElementById('modal-title').textContent = recipe.title[currentLang] || recipe.title.en;
+            document.getElementById('modal-subtitle').textContent = currentLang === 'en' ? recipe.title.si : recipe.title.en;
+            document.getElementById('modal-category-badge').textContent = t.categories[recipe.category] || recipe.category;
+            document.getElementById('modal-difficulty').textContent = recipe.difficulty[currentLang] || recipe.difficulty.en;
+
+            document.getElementById('stat-prep-lbl').textContent = t.statPrep;
+            document.getElementById('stat-prep-val').textContent = `${recipe.prepTime} ${t.mins}`;
+            document.getElementById('stat-cook-lbl').textContent = t.statCook;
+            document.getElementById('stat-cook-val').textContent = `${recipe.cookTime} ${t.mins}`;
+            document.getElementById('stat-serv-lbl').textContent = t.statServ;
+            document.getElementById('stat-serv-val').textContent = `${recipe.servings} ${t.people}`;
+
+            document.getElementById('modal-desc').textContent = recipe.description[currentLang] || recipe.description.en;
+
+            document.getElementById('modal-ing-title').innerHTML = `<span class="w-2 h-5 bg-terracotta rounded-full inline-block"></span> ${t.ingTitle}`;
+            document.getElementById('modal-ing-hint').textContent = t.ingHint;
+            document.getElementById('modal-steps-title').innerHTML = `<span class="w-2 h-5 bg-leafGreen rounded-full inline-block"></span> ${t.stepsTitle}`;
+
+            const ingredients = recipe.ingredients[currentLang] || recipe.ingredients.en;
+            const ingContainer = document.getElementById('modal-ingredients-list');
+            ingContainer.innerHTML = ingredients.map((item) => `
+                <label class="flex items-center gap-3.5 p-3.5 cursor-pointer hover:bg-warmCream transition select-none" onclick="toggleIngredientCheck(this)">
+                    <input type="checkbox" class="w-5 h-5 rounded-md accent-leafGreen cursor-pointer shrink-0">
+                    <span class="text-sm text-richBrown font-medium leading-snug transition-colors">${item}</span>
+                </label>
+            `).join('');
+
+            const steps = recipe.steps[currentLang] || recipe.steps.en;
+            const stepsContainer = document.getElementById('modal-steps-list');
+            stepsContainer.innerHTML = steps.map((step, idx) => `
+                <div class="bg-white p-4 rounded-2xl border border-stone-200/70 shadow-xs flex gap-3.5 items-start">
+                    <div class="w-7 h-7 rounded-full bg-leafGreen text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
+                        ${idx + 1}
+                    </div>
+                    <p class="text-sm text-richBrown leading-relaxed">${step}</p>
+                </div>
+            `).join('');
+
+            updateModalFavButton(id);
+
+            const modal = document.getElementById('recipe-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.getElementById('modal-scroll-area').scrollTop = 0;
+        }
+
+        function toggleIngredientCheck(labelEl) {
+            const checkbox = labelEl.querySelector('input[type="checkbox"]');
+            setTimeout(() => {
+                if (checkbox.checked) {
+                    labelEl.classList.add('ingredient-checked', 'bg-stone-50/70');
+                } else {
+                    labelEl.classList.remove('ingredient-checked', 'bg-stone-50/70');
+                }
+            }, 10);
+        }
+
+        function updateModalFavButton(id) {
+            const isFav = favoriteIds.includes(id);
+            const btn = document.getElementById('modal-fav-btn');
+            btn.innerHTML = isFav
+                ? '<i class="fa-solid fa-heart text-red-500"></i>'
+                : '<i class="fa-regular fa-heart text-stone-500"></i>';
+        }
+
+        function closeRecipeModal() {
+            const modal = document.getElementById('recipe-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            currentModalRecipeId = null;
+        }
+
+        function handleAddRecipe(event) {
+            event.preventDefault();
+
+            const nameVal = document.getElementById('inp-name').value.trim();
+            const categoryVal = document.getElementById('inp-category').value;
+            const emojiVal = document.getElementById('inp-emoji').value;
+            const prepVal = parseInt(document.getElementById('inp-prep').value, 10) || 15;
+            const cookVal = parseInt(document.getElementById('inp-cook').value, 10) || 20;
+            const servingsVal = parseInt(document.getElementById('inp-servings').value, 10) || 4;
+
+            const rawIngredients = document.getElementById('inp-ingredients').value
+                .split('\n')
+                .map(line => line.trim())
+                .filter(line => line.length > 0);
+
+            const rawSteps = document.getElementById('inp-steps').value
+                .split('\n')
+                .map(line => line.trim())
+                .filter(line => line.length > 0);
+
+            const gradients = {
+                Breakfast: 'from-amber-500 to-terracotta',
+                Curries: 'from-leafGreen to-emerald-700',
+                Sweets: 'from-amber-700 to-orange-900'
+            };
+
+            const pendingItem = {
+                id: 'pending-' + Date.now(),
+                category: categoryVal,
+                emoji: emojiVal,
+                gradient: gradients[categoryVal] || 'from-terracotta to-amber-700',
+                prepTime: prepVal,
+                cookTime: cookVal,
+                servings: servingsVal,
+                difficulty: { en: 'Pending', si: 'පරීක්ෂාවට' },
+                title: { en: nameVal, si: nameVal },
+                subtitle: { en: 'Awaiting Owner Confirmation', si: 'හිමිකරුගේ තහවුරු කිරීම අපේක්ෂිතයි' },
+                description: {
+                    en: `Submitted for owner confirmation on Hela Rasa (${categoryVal}).`,
+                    si: `හෙළ රස හිමිකරුගේ තහවුරු කිරීම සඳහා එවන ලද වට්ටෝරුවකි.`
+                },
+                ingredients: { en: rawIngredients, si: rawIngredients },
+                steps: { en: rawSteps, si: rawSteps },
+                status: 'pending'
+            };
+
+            pendingRecipes.unshift(pendingItem);
+            savePendingRecipes();
+
+            document.getElementById('add-recipe-form').reset();
+            if (isOwnerUnlocked) {
+                renderPendingRecipes();
+            }
+            updateSavedDot();
+            showToast(UI_TEXT[currentLang].toastPending);
+        }
+
+        function switchTab(tabName) {
+            activeTab = tabName;
+            const views = ['home', 'saved', 'add'];
+
+            views.forEach(v => {
+                const viewEl = document.getElementById(`view-${v}`);
+                const navBtn = document.getElementById(`nav-${v}`);
+                if (v === tabName) {
+                    viewEl.classList.remove('hidden');
+                    navBtn.classList.remove('text-stone-400');
+                    navBtn.classList.add('text-terracotta');
+                } else {
+                    viewEl.classList.add('hidden');
+                    navBtn.classList.remove('text-terracotta');
+                    navBtn.classList.add('text-stone-400');
+                }
+            });
+
+            if (tabName === 'saved') {
+                renderSavedRecipes();
+                updateOwnerUI();
+            }
+        }
+
+        let toastTimeout;
+        function showToast(msg) {
+            const box = document.getElementById('toast-box');
+            document.getElementById('toast-message').textContent = msg;
+            box.classList.remove('hidden');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                box.classList.add('hidden');
+            }, 2200);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            updateLanguageUI();
+            renderCategories();
+            renderRecipes();
+            updateOwnerUI();
+        });
+    </script>
 </body>
 </html>

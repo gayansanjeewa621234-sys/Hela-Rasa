@@ -1122,7 +1122,20 @@
             currentModalRecipeId = null;
         }
 
-        // 9. ADD CUSTOM RECIPE FORM HANDLER
+      // Pending recipes list (Yaluwa add karana ewa oyata confirm karanna wenama thiyenawa)
+        let pendingRecipes = [];
+        try {
+            const storedPending = localStorage.getItem('hela_rasa_pending_recipes');
+            if (storedPending) pendingRecipes = JSON.parse(storedPending);
+        } catch (e) {}
+
+        function savePendingRecipes() {
+            try {
+                localStorage.setItem('hela_rasa_pending_recipes', JSON.stringify(pendingRecipes));
+            } catch (e) {}
+        }
+
+        // Yaluwa "Add Recipe" eken submit kalama main list ekata nokara Pending list ekata danawa
         function handleAddRecipe(event) {
             event.preventDefault();
 
@@ -1149,37 +1162,83 @@
                 Sweets: 'from-amber-700 to-orange-900'
             };
 
-            const newRecipe = {
-                id: 'custom-' + Date.now(),
+            const submittedRecipe = {
+                id: 'pending-' + Date.now(),
                 category: categoryVal,
                 emoji: emojiVal,
                 gradient: gradients[categoryVal] || 'from-terracotta to-amber-700',
                 prepTime: prepVal,
                 cookTime: cookVal,
                 servings: servingsVal,
-                difficulty: { en: 'Custom', si: 'විශේෂ' },
+                difficulty: { en: 'Pending Check', si: 'පරීක්ෂා කළ යුතුයි' },
                 title: { en: nameVal, si: nameVal },
-                subtitle: { en: 'Community Traditional Recipe', si: 'පරිශීලකයෙකු එක් කළ වට්ටෝරුවකි' },
+                subtitle: { en: 'Submitted by Friend (Awaiting Confirmation)', si: 'යහළුවෙකු එක් කළ වට්ටෝරුවකි (තහවුරු කිරීමට)' },
                 description: {
-                    en: `A homemade traditional Sri Lankan ${categoryVal.toLowerCase()} recipe shared on Hela Rasa.`,
-                    si: `හෙළ රස වෙත එක් කරන ලද සාම්ප්‍රදායික ගෘහස්ථ වට්ටෝරුවකි.`
+                    en: `Submitted for owner confirmation on Hela Rasa (${categoryVal}).`,
+                    si: `හෙළ රස හිමිකරුගේ තහවුරු කිරීම සඳහා එවන ලද වට්ටෝරුවකි.`
                 },
                 ingredients: { en: rawIngredients, si: rawIngredients },
-                steps: { en: rawSteps, si: rawSteps }
+                steps: { en: rawSteps, si: rawSteps },
+                status: 'pending'
             };
 
-            customRecipes.unshift(newRecipe);
+            pendingRecipes.unshift(submittedRecipe);
+            savePendingRecipes();
+
+            // Yaluwata recipe code eka copy karaganna / oyata ewanna JSON string ekak hadanawa
+            const codeSnippet = JSON.stringify(submittedRecipe, null, 2);
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(codeSnippet).catch(() => {});
+            }
+
+            document.getElementById('add-recipe-form').reset();
+            showToast(
+                currentLang === 'si'
+                    ? 'වට්ටෝරුව Confirm කිරීමට යොමු කළා! (Code Copy විය)'
+                    : 'Submitted for Confirmation! (Code Copied)'
+            );
+        }
+
+        // Owner (Oya) recipe eka balala Confirm / Approve karana function eka
+        function confirmPendingRecipe(pendingId) {
+            const idx = pendingRecipes.findIndex(r => r.id === pendingId);
+            if (idx === -1) return;
+
+            const approved = {
+                ...pendingRecipes[idx],
+                id: 'confirmed-' + Date.now(),
+                difficulty: { en: 'Confirmed', si: 'තහවුරු කළ' },
+                status: 'confirmed'
+            };
+
+            pendingRecipes.splice(idx, 1);
+            savePendingRecipes();
+
+            customRecipes.unshift(approved);
             try {
                 localStorage.setItem('hela_rasa_custom_recipes', JSON.stringify(customRecipes));
             } catch (e) {}
 
-            // Reset form & switch to home
-            document.getElementById('add-recipe-form').reset();
             selectedCategory = 'All';
             renderCategories();
             renderRecipes();
             switchTab('home');
-            showToast(UI_TEXT[currentLang].toastPublished);
+            showToast(
+                currentLang === 'si'
+                    ? 'වට්ටෝරුව තහවුරු කර Main List එකට එක් කළා!'
+                    : 'Recipe confirmed & added to Main List!'
+            );
+        }
+
+        // Owner (Oya) recipe eka Reject / Delete karana function eka
+        function rejectPendingRecipe(pendingId) {
+            pendingRecipes = pendingRecipes.filter(r => r.id !== pendingId);
+            savePendingRecipes();
+            showToast(
+                currentLang === 'si'
+                    ? 'වට්ටෝරුව ප්‍රතික්ෂේප කර ඉවත් කළා'
+                    : 'Pending recipe rejected & removed'
+            );
         }
 
         // 10. BOTTOM TAB NAVIGATION

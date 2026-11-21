@@ -1121,7 +1121,74 @@
             modal.classList.remove('flex');
             currentModalRecipeId = null;
         }
+let pendingRecipes = [];
+        try {
+            const storedPending = localStorage.getItem('hela_rasa_pending_recipes');
+            if (storedPending) pendingRecipes = JSON.parse(storedPending);
+        } catch (e) {}
 
+        function savePendingRecipes() {
+            try {
+                localStorage.setItem('hela_rasa_pending_recipes', JSON.stringify(pendingRecipes));
+            } catch (e) {}
+        }
+
+        function handleAddRecipe(event) {
+            event.preventDefault();
+
+            const nameVal = document.getElementById('inp-name').value.trim();
+            const categoryVal = document.getElementById('inp-category').value;
+            const emojiVal = document.getElementById('inp-emoji').value;
+            const prepVal = parseInt(document.getElementById('inp-prep').value, 10) || 15;
+            const cookVal = parseInt(document.getElementById('inp-cook').value, 10) || 20;
+            const servingsVal = parseInt(document.getElementById('inp-servings').value, 10) || 4;
+
+            const rawIngredients = document.getElementById('inp-ingredients').value
+                .split('\n')
+                .map(line => line.trim())
+                .filter(line => line.length > 0);
+
+            const rawSteps = document.getElementById('inp-steps').value
+                .split('\n')
+                .map(line => line.trim())
+                .filter(line => line.length > 0);
+
+            const gradients = {
+                Breakfast: 'from-amber-500 to-terracotta',
+                Curries: 'from-leafGreen to-emerald-700',
+                Sweets: 'from-amber-700 to-orange-900'
+            };
+
+            const pendingItem = {
+                id: 'pending-' + Date.now(),
+                category: categoryVal,
+                emoji: emojiVal,
+                gradient: gradients[categoryVal] || 'from-terracotta to-amber-700',
+                prepTime: prepVal,
+                cookTime: cookVal,
+                servings: servingsVal,
+                difficulty: { en: 'Pending', si: 'පරීක්ෂාවට' },
+                title: { en: nameVal, si: nameVal },
+                subtitle: { en: 'Awaiting Owner Review', si: 'හිමිකරුගේ අනුමැතිය අපේක්ෂිතයි' },
+                description: {
+                    en: `Submitted for owner confirmation on Hela Rasa (${categoryVal}).`,
+                    si: `හෙළ රස හිමිකරුගේ තහවුරු කිරීම සඳහා එවන ලද වට්ටෝරුවකි.`
+                },
+                ingredients: { en: rawIngredients, si: rawIngredients },
+                steps: { en: rawSteps, si: rawSteps },
+                status: 'pending'
+            };
+
+            pendingRecipes.unshift(pendingItem);
+            savePendingRecipes();
+
+            document.getElementById('add-recipe-form').reset();
+            showToast(
+                currentLang === 'si'
+                    ? 'වට්ටෝරුව යොමු කළා! (Main list එකට වැටෙන්නේ නැත)'
+                    : 'Submitted! (Not added to Main list)'
+            );
+        }
       // Pending recipes list (Yaluwa add karana ewa oyata confirm karanna wenama thiyenawa)
         let pendingRecipes = [];
         try {
@@ -1229,7 +1296,6 @@
                     : 'Recipe confirmed & added to Main List!'
             );
         }
-
         // Owner (Oya) recipe eka Reject / Delete karana function eka
         function rejectPendingRecipe(pendingId) {
             pendingRecipes = pendingRecipes.filter(r => r.id !== pendingId);

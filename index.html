@@ -4,13 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hela Rasa (හෙළ රස) - Traditional Sri Lankan Recipes</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter & Noto Sans Sinhala -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Sinhala:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <script>
         tailwind.config = {
             theme: {
@@ -54,10 +51,8 @@
 </head>
 <body class="bg-stone-200 font-sans text-richBrown antialiased flex justify-center min-h-screen">
 
-    <!-- Mobile App Frame Container -->
     <div id="app-container" class="w-full max-w-[480px] bg-warmCream min-h-screen shadow-2xl relative flex flex-col overflow-x-hidden">
-        
-        <!-- Top App Header -->
+
         <header class="sticky top-0 z-30 bg-warmCream/95 backdrop-blur-md border-b border-stone-200/80 px-4 py-3.5 flex items-center justify-between">
             <div class="flex items-center gap-2.5">
                 <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-terracotta to-amber-600 flex items-center justify-center text-white shadow-md text-xl">
@@ -71,32 +66,28 @@
                 </div>
             </div>
 
-            <!-- Language Toggle Pill -->
             <button onclick="toggleLanguage()" class="flex items-center bg-softSand border border-stone-300/70 rounded-full p-1 shadow-inner transition active:scale-95" aria-label="Switch Language">
                 <span id="lang-en-badge" class="px-2.5 py-1 rounded-full text-xs font-bold transition-all bg-terracotta text-white shadow-sm">EN</span>
                 <span id="lang-si-badge" class="px-2.5 py-1 rounded-full text-xs font-bold transition-all text-stone-600">සිං</span>
             </button>
         </header>
 
-        <!-- Custom Toast Notification -->
         <div id="toast-box" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 hidden bg-leafGreen text-white px-4 py-2.5 rounded-full shadow-lg text-sm font-medium flex items-center gap-2 transition-all">
             <i class="fa-solid fa-circle-check"></i>
             <span id="toast-message">Saved!</span>
         </div>
 
-        <!-- MAIN CONTENT AREA -->
         <main class="flex-1 pb-24 overflow-y-auto">
-            
-            <!-- TAB 1: HOME SCREEN -->
+
+            <!-- TAB 1: HOME -->
             <section id="view-home" class="p-4 space-y-5 fade-in">
-                <!-- Search Bar -->
                 <div class="relative">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"></i>
-                    <input 
-                        type="text" 
-                        id="search-input" 
+                    <input
+                        type="text"
+                        id="search-input"
                         oninput="handleSearch()"
-                        placeholder="Search recipes or ingredients..." 
+                        placeholder="Search recipes or ingredients..."
                         class="w-full bg-white border border-stone-200 rounded-2xl py-3 pl-11 pr-10 text-sm text-richBrown placeholder-stone-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-terracotta/40 focus:border-terracotta transition"
                     >
                     <button id="clear-search-btn" onclick="clearSearch()" class="hidden absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-richBrown p-1">
@@ -104,25 +95,17 @@
                     </button>
                 </div>
 
-                <!-- Category Pills -->
                 <div>
-                    <div id="category-list" class="flex gap-2 overflow-x-auto no-scrollbar pb-1">
-                        <!-- Rendered dynamically -->
-                    </div>
+                    <div id="category-list" class="flex gap-2 overflow-x-auto no-scrollbar pb-1"></div>
                 </div>
 
-                <!-- Section Header -->
                 <div class="flex items-center justify-between">
                     <h2 id="recipes-section-title" class="text-base font-bold text-richBrown">Traditional Recipes</h2>
                     <span id="recipe-count-badge" class="text-xs font-semibold bg-softSand text-stone-600 px-2.5 py-1 rounded-full">7 dishes</span>
                 </div>
 
-                <!-- Recipe Cards Grid -->
-                <div id="recipe-grid" class="grid grid-cols-1 gap-4">
-                    <!-- Rendered dynamically -->
-                </div>
+                <div id="recipe-grid" class="grid grid-cols-1 gap-4"></div>
 
-                <!-- Empty Search State -->
                 <div id="empty-search-state" class="hidden text-center py-12 px-4">
                     <div class="text-5xl mb-3">🥥</div>
                     <h3 id="empty-search-title" class="font-bold text-richBrown text-base">No recipes found</h3>
@@ -130,7 +113,7 @@
                 </div>
             </section>
 
-            <!-- TAB 2: SAVED / FAVORITES & OWNER PENDING CONFIRMATION -->
+            <!-- TAB 2: SAVED & PENDING CONFIRMATION -->
             <section id="view-saved" class="hidden p-4 space-y-4 fade-in">
                 <div class="bg-gradient-to-r from-leafGreen to-leafGreenLight text-white p-4 rounded-2xl shadow-md flex items-center justify-between">
                     <div>
@@ -140,9 +123,7 @@
                     <div class="text-3xl">❤️</div>
                 </div>
 
-                <div id="saved-grid" class="grid grid-cols-1 gap-4">
-                    <!-- Rendered dynamically -->
-                </div>
+                <div id="saved-grid" class="grid grid-cols-1 gap-4"></div>
 
                 <div id="empty-saved-state" class="hidden text-center py-14 px-6 bg-white rounded-3xl border border-stone-100 shadow-sm">
                     <div class="w-16 h-16 bg-softSand rounded-full flex items-center justify-center text-3xl mx-auto mb-3">🔖</div>
@@ -153,7 +134,6 @@
                     </button>
                 </div>
 
-                <!-- PENDING RECIPES FOR OWNER CONFIRMATION -->
                 <div id="pending-section" class="mt-6 space-y-3">
                     <div class="bg-amber-50 border border-amber-200/80 p-3.5 rounded-2xl flex items-center justify-between">
                         <div>
@@ -166,7 +146,7 @@
                 </div>
             </section>
 
-            <!-- TAB 3: ADD RECIPE SCREEN -->
+            <!-- TAB 3: ADD RECIPE -->
             <section id="view-add" class="hidden p-4 space-y-4 fade-in">
                 <div class="bg-softSand border border-stone-200/80 p-4 rounded-2xl">
                     <h2 id="add-form-title" class="font-bold text-lg text-richBrown">Share a Traditional Recipe</h2>
@@ -174,13 +154,11 @@
                 </div>
 
                 <form id="add-recipe-form" onsubmit="handleAddRecipe(event)" class="bg-white p-4 rounded-3xl shadow-sm border border-stone-100 space-y-4">
-                    <!-- Dish Name -->
                     <div>
                         <label id="lbl-name" class="block text-xs font-bold text-richBrown mb-1.5">Dish Name (English / Sinhala) *</label>
                         <input type="text" id="inp-name" required placeholder="e.g., Pol Sambol / පොල් සම්බෝල" class="w-full bg-warmCream border border-stone-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-terracotta">
                     </div>
 
-                    <!-- Category & Icon Row -->
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label id="lbl-category" class="block text-xs font-bold text-richBrown mb-1.5">Category *</label>
@@ -204,7 +182,6 @@
                         </div>
                     </div>
 
-                    <!-- Prep Time, Cook Time, Servings -->
                     <div class="grid grid-cols-3 gap-2.5">
                         <div>
                             <label id="lbl-prep" class="block text-[11px] font-bold text-richBrown mb-1">Prep (mins) *</label>
@@ -220,13 +197,11 @@
                         </div>
                     </div>
 
-                    <!-- Ingredients -->
                     <div>
                         <label id="lbl-ingredients" class="block text-xs font-bold text-richBrown mb-1">Ingredients (One per line) *</label>
                         <textarea id="inp-ingredients" required rows="4" placeholder="2 cups scraped coconut&#10;3 red onions&#10;1 tsp chili powder&#10;Salt to taste" class="w-full bg-warmCream border border-stone-200 rounded-xl p-3 text-sm focus:outline-none focus:border-terracotta"></textarea>
                     </div>
 
-                    <!-- Steps -->
                     <div>
                         <label id="lbl-steps" class="block text-xs font-bold text-richBrown mb-1">Cooking Steps (One per line) *</label>
                         <textarea id="inp-steps" required rows="4" placeholder="Grind red onions, chili powder, and salt together.&#10;Add scraped coconut and mix well.&#10;Squeeze lime juice and serve." class="w-full bg-warmCream border border-stone-200 rounded-xl p-3 text-sm focus:outline-none focus:border-terracotta"></textarea>
@@ -240,10 +215,9 @@
             </section>
         </main>
 
-        <!-- RECIPE DETAIL MODAL / FULL OVERLAY VIEW -->
+        <!-- DETAIL MODAL -->
         <div id="recipe-modal" class="fixed inset-0 z-40 hidden justify-center bg-black/50 backdrop-blur-xs">
             <div class="w-full max-w-[480px] bg-warmCream h-full flex flex-col overflow-hidden shadow-2xl animate-fadeIn">
-                <!-- Modal Top Bar -->
                 <div class="flex items-center justify-between px-4 py-3 bg-white/90 backdrop-blur border-b border-stone-200 z-10">
                     <button onclick="closeRecipeModal()" class="w-10 h-10 rounded-full bg-softSand flex items-center justify-center text-richBrown hover:bg-stone-200 transition">
                         <i class="fa-solid fa-arrow-left"></i>
@@ -254,9 +228,7 @@
                     </button>
                 </div>
 
-                <!-- Modal Scrollable Content -->
                 <div id="modal-scroll-area" class="flex-1 overflow-y-auto pb-10">
-                    <!-- Illustrated Hero Banner -->
                     <div id="modal-hero-bg" class="p-6 text-white relative overflow-hidden bg-gradient-to-br from-terracotta to-amber-700">
                         <div class="relative z-10 flex items-center gap-4">
                             <div id="modal-emoji" class="w-20 h-20 rounded-3xl bg-white/20 backdrop-blur-md flex items-center justify-center text-5xl shadow-inner border border-white/30 shrink-0">
@@ -270,7 +242,6 @@
                         </div>
                     </div>
 
-                    <!-- Quick Stats Bar -->
                     <div class="grid grid-cols-3 divide-x divide-stone-200 bg-white mx-4 -mt-4 rounded-2xl shadow-md border border-stone-100 py-3 relative z-20 text-center">
                         <div>
                             <p id="stat-prep-lbl" class="text-[10px] uppercase font-bold text-stone-400">Prep Time</p>
@@ -286,12 +257,10 @@
                         </div>
                     </div>
 
-                    <!-- Description -->
                     <div class="px-5 mt-5">
                         <p id="modal-desc" class="text-sm text-stone-600 leading-relaxed"></p>
                     </div>
 
-                    <!-- Interactive Ingredients Checklist -->
                     <div class="px-5 mt-6">
                         <div class="flex items-center justify-between mb-3">
                             <h3 id="modal-ing-title" class="text-base font-extrabold text-richBrown flex items-center gap-2">
@@ -300,6 +269,338 @@
                             </h3>
                             <span id="modal-ing-hint" class="text-[11px] text-stone-400 font-medium">Tap to check off</span>
                         </div>
-                        <div id="modal-ingredients-list" class="bg-white rounded-2xl border border-stone-200/80 divide-y divide-stone-100 shadow-xs overflow-hidden">
-                            <!-- Checkable items rendered here -->
-                        </div>
+                        <div id="modal-ingredients-list" class="bg-white rounded-2xl border border-stone-200/80 divide-y divide-stone-100 shadow-xs overflow-hidden"></div>
+                    </div>
+
+                    <div class="px-5 mt-6">
+                        <h3 id="modal-steps-title" class="text-base font-extrabold text-richBrown flex items-center gap-2 mb-3">
+                            <span class="w-2 h-5 bg-leafGreen rounded-full inline-block"></span>
+                            Cooking Instructions
+                        </h3>
+                        <div id="modal-steps-list" class="space-y-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM NAV -->
+        <nav class="fixed bottom-0 w-full max-w-[480px] bg-white/95 backdrop-blur-md border-t border-stone-200 px-6 py-2.5 flex justify-around items-center z-30 shadow-[0_-4px_15px_rgba(0,0,0,0.04)]">
+            <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center gap-1 text-terracotta transition px-3 py-1">
+                <i class="fa-solid fa-house text-lg"></i>
+                <span id="nav-lbl-home" class="text-[11px] font-bold">Home</span>
+            </button>
+
+            <button onclick="switchTab('saved')" id="nav-saved" class="flex flex-col items-center gap-1 text-stone-400 hover:text-richBrown transition px-3 py-1 relative">
+                <i class="fa-solid fa-heart text-lg"></i>
+                <span id="nav-lbl-saved" class="text-[11px] font-bold">Saved</span>
+                <span id="saved-dot" class="hidden absolute top-1 right-3 w-2 h-2 bg-terracotta rounded-full"></span>
+            </button>
+
+            <button onclick="switchTab('add')" id="nav-add" class="flex flex-col items-center gap-1 text-stone-400 hover:text-richBrown transition px-3 py-1">
+                <i class="fa-solid fa-circle-plus text-lg"></i>
+                <span id="nav-lbl-add" class="text-[11px] font-bold">Add Recipe</span>
+            </button>
+        </nav>
+
+    </div>
+
+    <script>
+        const DEFAULT_RECIPES = [
+            {
+                id: 'batu-moju',
+                category: 'Curries',
+                emoji: '🍆',
+                gradient: 'from-purple-700 to-terracotta',
+                prepTime: 15,
+                cookTime: 20,
+                servings: 4,
+                difficulty: { en: 'Easy', si: 'පහසුයි' },
+                title: { en: 'Batu Moju (Brinjal Moju)', si: 'බටු මෝජු' },
+                subtitle: { en: 'Sweet, Tangy & Spicy Brinjal Relish', si: 'පැණි, ඇඹුල් සහ සැර රසැති වම්බටු මෝජු' },
+                description: {
+                    en: 'A classic Sri Lankan sweet-and-sour fried brinjal relish cooked with vinegar, sugar, mustard seeds, and red onions.',
+                    si: 'බැදගත් වම්බටු, රතු ළූණු, අබ, විනාකිරි සහ සීනි යොදා සාදාගන්නා ඉතා රසවත් සාම්ප්‍රදායික ශ්‍රී ලාංකික මෝජු වර්ගයකි.'
+                },
+                ingredients: {
+                    en: [
+                        '300g Sri Lankan brinjals (Wambatu), cut into strips',
+                        '10–12 red onions (shallots), thinly sliced',
+                        '4–5 green chilies, slit lengthwise',
+                        '3–4 tbsp white vinegar',
+                        '1 ½ tsp sugar',
+                        '½ tsp turmeric powder',
+                        '1 tsp chili powder',
+                        '½ tsp mustard seeds',
+                        'Coconut oil for frying & salt to taste'
+                    ],
+                    si: [
+                        'කපාගත් වම්බටු ග්‍රෑම් 300ක්',
+                        'සිහින්ව ලියාගත් රතු ළූණු ගෙඩි 10-12ක්',
+                        'දික් අතට පලාගත් අමු මිරිස් කරල් 4-5ක්',
+                        'විනාකිරි මේස හැඳි 3-4ක්',
+                        'සීනි තේ හැඳි 1 ½ක්',
+                        'කහ කුඩු තේ හැඳි ½ක්',
+                        'මිරිස් කුඩු තේ හැඳි 1ක්',
+                        'අබ ඇට තේ හැඳි ½ක්',
+                        'බැදීමට පොල් තෙල් සහ රස අනුව ලුණු'
+                    ]
+                },
+                steps: {
+                    en: [
+                        'Rub the brinjal strips with salt and a little turmeric, then fry in hot coconut oil until golden brown. Drain excess oil.',
+                        'Leave about 2 tbsp oil in a pan and splutter the mustard seeds.',
+                        'Add sliced red onions and green chilies, sautéing gently until soft.',
+                        'Mix in chili powder, remaining turmeric, vinegar, sugar, and salt. Simmer for 2–3 minutes.',
+                        'Gently fold in the fried brinjal strips without breaking them, mix well, and remove from heat.'
+                    ],
+                    si: [
+                        'කපාගත් වම්බටු වලට ලුණු සහ කහ ස්වල්පයක් තවරා, රත් වූ පොල් තෙලේ රන්වන් පැහැ වන තුරු බැද තෙල් බේරෙන්නට තබන්න.',
+                        'එම තෙලෙන්ම මේස හැඳි 2ක් පමණ තාච්චියක ඉතිරි කර අබ ඇට දමා පුපුරවා ගන්න.',
+                        'එයට ලියාගත් රතු ළූණු සහ අමු මිරිස් එක් කර මෘදු වන තුරු මඳ ගින්නේ බැදගන්න.',
+                        'මිරිස් කුඩු, ඉතිරි කහ, විනාකිරි, සීනි සහ රස අනුව ලුණු එක් කර විනාඩි 2-3ක් හොඳින් කලවම් කරන්න.',
+                        'අවසානයේ බැදගත් වම්බටු එක් කර කැබලි නොකැඩෙන සේ සෙමින් කලවම් කර ලිපෙන් බාගන්න.'
+                    ]
+                }
+            },
+            {
+                id: 'kiribath',
+                category: 'Breakfast',
+                emoji: '🍚',
+                gradient: 'from-amber-500 to-terracotta',
+                prepTime: 10,
+                cookTime: 25,
+                servings: 6,
+                difficulty: { en: 'Easy', si: 'පහසුයි' },
+                title: { en: 'Kiribath (Milk Rice)', si: 'කිරිබත්' },
+                subtitle: { en: 'Traditional Auspicious Rice Dish', si: 'සාම්ප්‍රදායික මංගල කිරිබත්' },
+                description: {
+                    en: 'A sacred and celebratory Sri Lankan dish made by cooking white or red rice with rich coconut milk. Traditionally served cut into diamond shapes alongside Lunu Miris.',
+                    si: 'ශ්‍රී ලාංකිකයන්ගේ සෑම සුබ කටයුත්තකදීම පිළියෙළ කරන ප්‍රධානතම ආහාරයකි. උකු පොල් කිරි යොදා පිසගන්නා කිරිබත් ලුණු මිරිස් සමඟ ඉතා රසවත්ය.'
+                },
+                ingredients: {
+                    en: [
+                        '2 cups white raw rice (Kekulu Hal)',
+                        '3 cups water',
+                        '1 ½ cups thick coconut milk',
+                        '1 tsp salt (or to taste)',
+                        '1 piece of Pandan leaf (Rampe)'
+                    ],
+                    si: [
+                        'සුදු කැකුළු හාල් කෝප්ප 2ක්',
+                        'වතුර කෝප්ප 3ක්',
+                        'උකු පොල් කිරි කෝප්ප 1 ½ක්',
+                        'ලුණු තේ හැඳි 1ක් (රස අනුව)',
+                        'රම්පේ කැබැල්ලක්'
+                    ]
+                },
+                steps: {
+                    en: [
+                        'Wash the raw rice thoroughly until the water runs clear.',
+                        'Place rice, water, and pandan leaf in a heavy-bottomed pot. Cover and cook on medium heat until the water is absorbed and rice is soft.',
+                        'Mix salt into the thick coconut milk and pour it over the cooked rice.',
+                        'Stir gently with a wooden spoon on low heat for 5–7 minutes until the milk is absorbed and the mixture becomes creamy.',
+                        'Transfer onto a flat plate, flatten the top with a banana leaf or wet spatula, cool slightly, and cut into diamond shapes.'
+                    ],
+                    si: [
+                        'කැකුළු හාල් හොඳින් සෝදා පිරිසිදු කරගන්න.',
+                        'සෝදාගත් හාල්, වතුර සහ රම්පේ කැබැල්ල භාජනයකට දමා මඳ ගින්නේ බත හොඳින් ඉදෙන තුරු පිසගන්න.',
+                        'උකු පොල් කිරි වලට ලුණු දමා හොඳින් දියකර පිසගත් බතට එක් කරන්න.',
+                        'අඩු ගින්නේ විනාඩි 5-7ක් පමණ හැඳි ගාමින් කිරි හොඳින් බතට උරාගන්නා තුරු පිසගන්න.',
+                        'පැතලි පිඟානකට දමා කෙසෙල් කොළයකින් හොඳින් තුනී කර, නිවුණු පසු කැබලි වලට කපා පිළිගන්වන්න.'
+                    ]
+                }
+            },
+            {
+                id: 'polos-ambula',
+                category: 'Curries',
+                emoji: '🍛',
+                gradient: 'from-leafGreen to-emerald-700',
+                prepTime: 25,
+                cookTime: 60,
+                servings: 5,
+                difficulty: { en: 'Medium', si: 'මධ්‍යම' },
+                title: { en: 'Polos Ambula', si: 'පොළොස් ඇඹුල' },
+                subtitle: { en: 'Slow-Cooked Young Jackfruit Curry', si: 'සාම්ප්‍රදායික පොළොස් ව්‍යංජනය' },
+                description: {
+                    en: 'A deeply flavorful, tender young jackfruit curry slow-cooked in clay pots with roasted Sri Lankan spices, goraka, and coconut milk until dark and rich.',
+                    si: 'බැදපු තුනපහ, ගොරකා සහ පොල් කිරි යොදා මැටි ඇතිලියක මඳ ගින්නේ සෙමින් පිසගන්නා ඉතා රසවත් සාම්ප්‍රදායික ව්‍යංජනයකි.'
+                },
+                ingredients: {
+                    en: [
+                        '500g young jackfruit (Polos), cut into chunks',
+                        '2 tbsp roasted curry powder',
+                        '1 tsp roasted chili powder',
+                        '3 pieces of Goraka (soaked & ground)',
+                        '1 cup thick coconut milk & 2 cups thin coconut milk',
+                        '1 sliced onion, 3 garlic cloves, 1-inch ginger',
+                        'Curry leaves, Pandan leaf, 1 cinnamon stick',
+                        'Salt to taste'
+                    ],
+                    si: [
+                        'කැබලි කපාගත් ළපටි පොළොස් ග්‍රෑම් 500ක්',
+                        'බැදපු තුනපහ කුඩු මේස හැඳි 2ක්',
+                        'බැදපු මිරිස් කුඩු තේ හැඳි 1ක්',
+                        'අඹරාගත් ගොරකා බිකි 3ක්',
+                        'උකු පොල් කිරි කෝප්ප 1ක් සහ දිය කිරි කෝප්ප 2ක්',
+                        'ලියාගත් ළූණු ගෙඩියක්, සුදුළූණු බිකි 3ක්, ඉඟුරු කැබැල්ලක්',
+                        'කරපිංචා, රම්පේ, කුරුඳු පොත්තක් සහ රස අනුව ලුණු'
+                    ]
+                },
+                steps: {
+                    en: [
+                        'Mix the polos chunks with roasted curry powder, chili powder, ground goraka, ginger, garlic, and salt. Let marinate for 15 minutes.',
+                        'Place the marinated polos in a clay pot (Mati Athiliya) along with onions, curry leaves, pandan, cinnamon, and thin coconut milk.',
+                        'Cover and simmer on low-medium heat for 40–45 minutes until the jackfruit pieces become very tender.',
+                        'Pour in the thick coconut milk, gently stir, and simmer uncovered for another 10–15 minutes until the gravy thickens and turns dark brown.'
+                    ],
+                    si: [
+                        'කපාගත් පොළොස් කැබලි වලට බැදපු තුනපහ, මිරිස් කුඩු, අඹරාගත් ගොරකා, ඉඟුරු, සුදුළූණු සහ ලුණු දමා විනාඩි 15ක් පදම් වෙන්න හරින්න.',
+                        'පදම් වූ පොළොස් මැටි ඇතිලියකට දමා එයට ළූණු, කරපිංචා, රම්පේ, කුරුඳු සහ දිය කිරි එකතු කරන්න.',
+                        'පියනකින් වසා මඳ ගින්නේ විනාඩි 40-45ක් පමණ පොළොස් කැබලි හොඳින් තැම්බෙන තුරු පිසගන්න.',
+                        'අවසානයේ උකු පොල් කිරි එක් කර තවත් විනාඩි 10-15ක් හොද්ද හිඳී තද දුඹුරු පැහැ වන තුරු පිසගන්න.'
+                    ]
+                }
+            },
+            {
+                id: 'konda-kavum',
+                category: 'Sweets',
+                emoji: '🍩',
+                gradient: 'from-amber-700 to-orange-900',
+                prepTime: 30,
+                cookTime: 30,
+                servings: 15,
+                difficulty: { en: 'Hard', si: 'අපහසුයි' },
+                title: { en: 'Konda Kavum', si: 'කොණ්ඩ කැවුම්' },
+                subtitle: { en: 'Traditional Sri Lankan Oil Cake', si: 'සිංහල අවුරුදු රසකැවිලි' },
+                description: {
+                    en: 'The king of Sri Lankan New Year sweets. Made from rice flour and rich kithul treacle, fried to perfection with its signature top knot (Konda).',
+                    si: 'සිංහල හා හින්දු අලුත් අවුරුදු මේසයේ නැතිවම බැරි ප්‍රධානතම රසකැවිල්ලකි. හාල් පිටි සහ කිතුල් පැණි මිශ්‍ර කර ගැඹුරු තෙලේ බැද සාදාගනී.'
+                },
+                ingredients: {
+                    en: [
+                        '2 cups roasted white rice flour',
+                        '2 tbsp all-purpose wheat flour',
+                        '1 cup pure Kithul treacle (Pani)',
+                        '¼ cup warm water',
+                        '½ tsp cardamom powder & a pinch of salt',
+                        'Coconut oil for deep frying'
+                    ],
+                    si: [
+                        'කබලේ බැද හලාගත් සුදු හාල් පිටි කෝප්ප 2ක්',
+                        'පාන් පිටි මේස හැඳි 2ක්',
+                        'පිරිසිදු කිතුල් පැණි කෝප්ප 1ක්',
+                        'මඳ රස්නේ වතුර කෝප්ප ¼ක්',
+                        'කුඩු කරගත් එනසාල් තේ හැඳි ½ක් සහ ලුණු ස්වල්පයක්',
+                        'බැදීමට පොල් තෙල්'
+                    ]
+                },
+                steps: {
+                    en: [
+                        'Warm the Kithul treacle gently in a pan (do not boil) and let it cool slightly.',
+                        'In a bowl, mix rice flour, wheat flour, cardamom, and salt. Gradually pour in the treacle and warm water to form a thick, smooth pouring batter.',
+                        'Cover and rest the batter for at least 1–2 hours.',
+                        'Heat coconut oil in a small deep wok (Thachchiya). Pour a small ladle of batter into the center.',
+                        'As the edges puff up, use a skewer (ekel) to swirl the center batter upward while splashing hot oil over it to form the "Konda" (top knot). Fry until golden brown.'
+                    ],
+                    si: [
+                        'කිතුල් පැණි ටික භාජනයකට දමා මඳක් රත් කර නිවෙන්නට හරින්න.',
+                        'හාල් පිටි, පාන් පිටි, එනසාල් සහ ලුණු මිශ්‍ර කර එයට පැණි සහ වතුර ටික ටික එක් කරමින් උකු මිශ්‍රණයක් සාදාගන්න.',
+                        'මෙම මිශ්‍රණය පැය 1-2ක් පමණ වසා පදම් වෙන්නට තබන්න.',
+                        'කුඩා තාච්චියක පොල් තෙල් රත් කර, පිටි මිශ්‍රණයෙන් හැන්දක් තෙල් මැදට වත් කරන්න.',
+                        'කැවුම පිම්බීගෙන එන විට ඉරටුවකින් මැදට කරකවමින් උඩට තෙල් ඉස "කොණ්ඩය" සාදා රන්වන් පැහැ වන තුරු බැදගන්න.'
+                    ]
+                }
+            },
+            {
+                id: 'kokis',
+                category: 'Sweets',
+                emoji: '🏵️',
+                gradient: 'from-yellow-500 to-amber-600',
+                prepTime: 15,
+                cookTime: 25,
+                servings: 20,
+                difficulty: { en: 'Medium', si: 'මධ්‍යම' },
+                title: { en: 'Kokis', si: 'කොකිස්' },
+                subtitle: { en: 'Crispy Rosette Cookies', si: 'කරකර ගා හැපෙන කොකිස්' },
+                description: {
+                    en: 'Crunchy, golden-yellow rosette-shaped treats made using a traditional brass kokis mold, thick coconut milk, rice flour, and a hint of turmeric.',
+                    si: 'කොකිස් අච්චුව ආධාරයෙන් පොල් කිරි, හාල් පිටි සහ කහ ස්වල්පයක් යොදා ගැඹුරු තෙලේ බැද සාදාගන්නා ඉතා රසවත් අවුරුදු කෑමකි.'
+                },
+                ingredients: {
+                    en: [
+                        '2 cups white rice flour',
+                        '1 ½ cups thick coconut milk',
+                        '1 egg (beaten)',
+                        '½ tsp turmeric powder',
+                        '½ tsp salt',
+                        'Coconut oil for deep frying'
+                    ],
+                    si: [
+                        'සුදු හාල් පිටි කෝප්ප 2ක්',
+                        'උකු පොල් කිරි කෝප්ප 1 ½ක්',
+                        'ගසාගත් බිත්තර 1ක්',
+                        'කහ කුඩු තේ හැඳි ½ක්',
+                        'ලුණු තේ හැඳි ½ක්',
+                        'බැදීමට පොල් තෙල්'
+                    ]
+                },
+                steps: {
+                    en: [
+                        'Whisk together rice flour, turmeric powder, salt, beaten egg, and coconut milk until you get a smooth, lump-free batter.',
+                        'Heat coconut oil in a deep pan and place the brass Kokis mold inside the oil to heat up for 2 minutes.',
+                        'Dip the hot mold three-quarters into the batter (do not cover the top edge of the mold).',
+                        'Immediately immerse the batter-coated mold into the hot oil. Gently shake until the Kokis detaches from the mold and fry until crisp and golden.'
+                    ],
+                    si: [
+                        'හාල් පිටි, කහ කුඩු, ලුණු, බිත්තරය සහ පොල් කිරි එකට දමා කැට නොසිටින සේ උකු දියරයක් සාදාගන්න.',
+                        'තාච්චියක පොල් තෙල් රත් කර කොකිස් අච්චුව විනාඩි 2ක් පමණ රත් වූ තෙලේ ගිල්වා තබන්න.',
+                        'රත් වූ අච්චුව පිටි මිශ්‍රණයේ 3/4ක් පමණ ගිල්වා ගන්න (අච්චුවේ උඩ දාරය වැසෙන සේ ගිල්වන්න එපා).',
+                        'වහාම එය රත් වූ තෙලට දමා සෙමින් සොලවන්න. කොකිස් එක අච්චුවෙන් ගැලවුණු පසු රන්වන් පැහැ වන තුරු බැදගන්න.'
+                    ]
+                }
+            },
+            {
+                id: 'watalappan',
+                category: 'Sweets',
+                emoji: '🍮',
+                gradient: 'from-stone-700 to-amber-900',
+                prepTime: 15,
+                cookTime: 40,
+                servings: 6,
+                difficulty: { en: 'Easy', si: 'පහසුයි' },
+                title: { en: 'Watalappan', si: 'වටලප්පන්' },
+                subtitle: { en: 'Spiced Coconut Jaggery Custard', si: 'කිතුල් හකුරු සහ පොල් කිරි අතුරුපස' },
+                description: {
+                    en: 'A rich, velvety Sri Lankan steamed custard pudding sweetened with dark Kithul jaggery and infused with cardamom, nutmeg, and roasted cashews.',
+                    si: 'කිතුල් හකුරු, උකු පොල් කිරි, බිත්තර සහ එනසාල් යොදා වාෂ්පයෙන් තම්බා සාදාගන්නා ඉතා රසවත් සාම්ප්‍රදායික අතුරුපසකි.'
+                },
+                ingredients: {
+                    en: [
+                        '250g Kithul jaggery (finely grated)',
+                        '1 cup thick coconut milk',
+                        '5 large eggs',
+                        '½ tsp crushed cardamom pods',
+                        '¼ tsp grated nutmeg & pinch of salt',
+                        '2 tbsp roasted cashew nuts for garnish'
+                    ],
+                    si: [
+                        'සිහින්ව ගාගත් කිතුල් හකුරු ග්‍රෑම් 250ක්',
+                        'උකු පොල් කිරි කෝප්ප 1ක්',
+                        'බිත්තර 5ක්',
+                        'කුඩු කරගත් එනසාල් තේ හැඳි ½ක්',
+                        'සාදික්කා කුඩු තේ හැඳි ¼ක් සහ ලුණු ස්වල්පයක්',
+                        'සැරසීමට බැදගත් කජු මේස හැඳි 2ක්'
+                    ]
+                },
+                steps: {
+                    en: [
+                        'Dissolve the grated Kithul jaggery in the thick coconut milk completely and strain to remove any impurities.',
+                        'In a separate bowl, lightly beat the eggs (do not make them frothy).',
+                        'Gently fold the jaggery-coconut milk mixture, cardamom, nutmeg, and salt into the eggs.',
+                        'Pour into a greased heatproof bowl, cover tightly with foil, and steam for 35–40 minutes until set. Chill and top with cashews.'
+                    ],
+                    si: [
+                        'ගාගත් කිතුල් හකුරු උකු පොල් කිරි සමඟ හොඳින් දියකර පෙරා ගන්න.',
+                        'වෙනත් භාජනයක බිත්තර ටික දමා පෙණ නොනඟින සේ සෙමින් ගසාගන්න.',
+                        'එයට හකුරු මිශ්‍රණය, එනසාල්, සාදික්කා සහ ලුණු එක් කර හොඳින් කලවම් කරන්න.',
+                        'තෙ

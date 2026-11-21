@@ -1202,68 +1202,7 @@ let pendingRecipes = [];
             } catch (e) {}
         }
 
-        // Yaluwa "Add Recipe" eken submit kalama main list ekata nokara Pending list ekata danawa
-        function handleAddRecipe(event) {
-            event.preventDefault();
-
-            const nameVal = document.getElementById('inp-name').value.trim();
-            const categoryVal = document.getElementById('inp-category').value;
-            const emojiVal = document.getElementById('inp-emoji').value;
-            const prepVal = parseInt(document.getElementById('inp-prep').value, 10) || 15;
-            const cookVal = parseInt(document.getElementById('inp-cook').value, 10) || 20;
-            const servingsVal = parseInt(document.getElementById('inp-servings').value, 10) || 4;
-
-            const rawIngredients = document.getElementById('inp-ingredients').value
-                .split('\n')
-                .map(line => line.trim())
-                .filter(line => line.length > 0);
-
-            const rawSteps = document.getElementById('inp-steps').value
-                .split('\n')
-                .map(line => line.trim())
-                .filter(line => line.length > 0);
-
-            const gradients = {
-                Breakfast: 'from-amber-500 to-terracotta',
-                Curries: 'from-leafGreen to-emerald-700',
-                Sweets: 'from-amber-700 to-orange-900'
-            };
-
-            const submittedRecipe = {
-                id: 'pending-' + Date.now(),
-                category: categoryVal,
-                emoji: emojiVal,
-                gradient: gradients[categoryVal] || 'from-terracotta to-amber-700',
-                prepTime: prepVal,
-                cookTime: cookVal,
-                servings: servingsVal,
-                difficulty: { en: 'Pending Check', si: 'පරීක්ෂා කළ යුතුයි' },
-                title: { en: nameVal, si: nameVal },
-                subtitle: { en: 'Submitted by Friend (Awaiting Confirmation)', si: 'යහළුවෙකු එක් කළ වට්ටෝරුවකි (තහවුරු කිරීමට)' },
-                description: {
-                    en: `Submitted for owner confirmation on Hela Rasa (${categoryVal}).`,
-                    si: `හෙළ රස හිමිකරුගේ තහවුරු කිරීම සඳහා එවන ලද වට්ටෝරුවකි.`
-                },
-                ingredients: { en: rawIngredients, si: rawIngredients },
-                steps: { en: rawSteps, si: rawSteps },
-                status: 'pending'
-            };
-
-            pendingRecipes.unshift(submittedRecipe);
-            savePendingRecipes();
-
-            // Yaluwata recipe code eka copy karaganna / oyata ewanna JSON string ekak hadanawa
-            const codeSnippet = JSON.stringify(submittedRecipe, null, 2);
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(codeSnippet).catch(() => {});
-            }
-
-            document.getElementById('add-recipe-form').reset();
-            showToast(
-                currentLang === 'si'
-                    ? 'වට්ටෝරුව Confirm කිරීමට යොමු කළා! (Code Copy විය)'
-                    : 'Submitted for Confirmation! (Code Copied)'
-            );
+            
         }
 
         // Owner (Oya) recipe eka balala Confirm / Approve karana function eka
